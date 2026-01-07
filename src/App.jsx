@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
     Calendar,
-    Clock,
     BookOpen,
     AlertCircle,
     Download,
     Printer,
-    Trash2,
-    Plus,
     TrendingUp,
     Award,
     CalendarDays,
     Moon,
     Sun,
+    List,
     LayoutGrid,
-    List
+    Trash
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
@@ -22,43 +20,50 @@ import * as XLSX from 'xlsx';
 import { DAY_NAMES, DAY_MAPPING, CHILEAN_HOLIDAYS_2026 } from './logic/constants';
 import { getEffectiveHours, formatDateLong, getHolidayName } from './logic/utils';
 import CalendarGrid from './components/CalendarGrid';
+import CourseForm from './components/CourseForm';
+import ScheduleList from './components/ScheduleList';
 
 function App() {
-    // --- State ---
+    // --- State Initialization ---
+    // Initial default state for resetting
+    const initialCourseData = {
+        courseName: '',
+        startDate: '',
+        sessionsPerWeek: 2,
+        classDays: ['monday', 'wednesday'],
+        totalHours: 40,
+        hourType: 'pedagogical',
+        hoursPerSession: 2,
+        recoverySessionsCount: 0,
+        customExcludedDates: []
+    };
+
     const [courseData, setCourseData] = useState(() => {
         try {
             const savedData = typeof window !== 'undefined' ? localStorage.getItem('courseData') : null;
-            return savedData ? JSON.parse(savedData) : {
-                courseName: '',
-                startDate: '',
-                sessionsPerWeek: 2,
-                classDays: ['monday', 'wednesday'],
-                totalHours: 40,
-                hourType: 'pedagogical',
-                hoursPerSession: 2,
-                recoverySessionsCount: 0,
-                customExcludedDates: []
-            };
+            return savedData ? JSON.parse(savedData) : initialCourseData;
         } catch (e) {
-            return {
-                courseName: '', startDate: '', sessionsPerWeek: 2, classDays: ['monday', 'wednesday'],
-                totalHours: 40, hourType: 'pedagogical', hoursPerSession: 2, recoverySessionsCount: 0, customExcludedDates: []
-            };
+            return initialCourseData;
         }
     });
 
-    const [newExcludedDate, setNewExcludedDate] = useState('');
     const [schedule, setSchedule] = useState([]);
     const [darkMode, setDarkMode] = useState(false);
     const [viewMode, setViewMode] = useState('list'); // 'list' | 'calendar'
 
     // --- Effects ---
+    // Persist data to localStorage whenever courseData changes
     useEffect(() => {
         if (typeof window !== 'undefined') {
             localStorage.setItem('courseData', JSON.stringify(courseData));
         }
     }, [courseData]);
 
+    // --- Logic Helpers ---
+
+    /**
+     * strict check if a date should be skipped in the schedule
+     */
     const isDateExcluded = useCallback((date) => {
         const dateStr = date.toISOString().split('T')[0];
         const dayOfWeek = date.getDay();
@@ -69,7 +74,10 @@ function App() {
         return false;
     }, [courseData.customExcludedDates]);
 
-    // --- Core Calculation ---
+    /**
+     * Core Algorithm: Calculates the entire class schedule based on configuration.
+     * Iterates day by day until total required hours are met.
+     */
     const calculateSchedule = useCallback(() => {
         if (!courseData.startDate || courseData.classDays.length === 0) {
             setSchedule([]);
@@ -96,6 +104,7 @@ function App() {
 
         const totalHoursNeeded = courseData.totalHours;
 
+        // Loop until we reach the target hours or hit a safety limit
         while (accumulatedEff < totalHoursNeeded && safetyCounter < 1500) {
             const dayNum = current.getDay();
 
@@ -137,6 +146,7 @@ function App() {
     }, [courseData, calculateSchedule]);
 
     // --- Handlers ---
+    
     const handleInputChange = (field, value) => {
         setCourseData((prev) => ({ ...prev, [field]: value }));
     };
@@ -150,15 +160,25 @@ function App() {
         }));
     };
 
-    const addExcludedDate = () => {
-        if (newExcludedDate && !courseData.customExcludedDates.includes(newExcludedDate)) {
-            handleInputChange('customExcludedDates', [...courseData.customExcludedDates, newExcludedDate]);
-            setNewExcludedDate('');
+    const addExcludedDate = (date) => {
+        if (date && !courseData.customExcludedDates.includes(date)) {
+            handleInputChange('customExcludedDates', [...courseData.customExcludedDates, date]);
         }
     };
 
     const removeExcludedDate = (dateToRemove) => {
         handleInputChange('customExcludedDates', courseData.customExcludedDates.filter((d) => d !== dateToRemove));
+    };
+
+    /**
+     * Resets the application state to a blank slate
+     */
+    const resetCourse = () => {
+        if (window.confirm('¿Estás seguro de que deseas eliminar toda la información actual? Esto no se puede deshacer.')) {
+            setCourseData(initialCourseData);
+            setSchedule([]);
+            localStorage.removeItem('courseData');
+        }
     };
 
     const exportToExcel = () => {
@@ -248,9 +268,20 @@ function App() {
                         <button
                             onClick={() => setDarkMode(!darkMode)}
                             className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-indigo-500 transition-all"
+                            title="Cambiar tema"
                         >
                             {darkMode ? <Sun size={20} className="text-amber-400" /> : <Moon size={20} className="text-indigo-600" />}
                         </button>
+                        
+                        {/* New Reset Button */}
+                        <button 
+                            onClick={resetCourse}
+                            className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-rose-500 hover:text-rose-500 transition-all"
+                            title="Eliminar todo / Reiniciar"
+                        >
+                            <Trash size={20} />
+                        </button>
+
                         <div className="flex gap-2">
                             <button onClick={exportToExcel} className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg shadow-emerald-600/20 transition-all active:scale-95">
                                 <Download size={18} /> Excel
@@ -264,129 +295,13 @@ function App() {
 
                 <main className="grid lg:grid-cols-12 gap-8">
                     <aside className="lg:col-span-4 space-y-6 no-print">
-                        <section className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
-                            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                                <Plus className="text-indigo-500" size={22} />
-                                Nuevo Curso
-                            </h2>
-
-                            <div className="space-y-5">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nombre del Curso</label>
-                                    <input
-                                        type="text"
-                                        value={courseData.courseName}
-                                        onChange={(e) => handleInputChange('courseName', e.target.value)}
-                                        placeholder="Ej. Diplomado en Marketing Digital"
-                                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fecha Inicio</label>
-                                        <input
-                                            type="date"
-                                            value={courseData.startDate}
-                                            onChange={(e) => handleInputChange('startDate', e.target.value)}
-                                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Horas</label>
-                                        <input
-                                            type="number"
-                                            value={courseData.totalHours}
-                                            onChange={(e) => handleInputChange('totalHours', parseInt(e.target.value) || 0)}
-                                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tipo de Medición</label>
-                                    <div className="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                                        {['pedagogical', 'chronological', 'dgai'].map((type) => (
-                                            <button
-                                                key={type}
-                                                onClick={() => handleInputChange('hourType', type)}
-                                                className={`flex-1 py-2 px-2 text-xs font-bold rounded-lg transition-all ${courseData.hourType === type
-                                                        ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400'
-                                                        : 'text-slate-500 hover:text-slate-700'
-                                                    }`}
-                                            >
-                                                {type.charAt(0).toUpperCase() + type.slice(1)}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Hrs / Sesión</label>
-                                        <input
-                                            type="number"
-                                            step="0.1"
-                                            value={courseData.hoursPerSession}
-                                            onChange={(e) => handleInputChange('hoursPerSession', parseFloat(e.target.value) || 0)}
-                                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ses. Recuperación</label>
-                                        <input
-                                            type="number"
-                                            value={courseData.recoverySessionsCount}
-                                            onChange={(e) => handleInputChange('recoverySessionsCount', parseInt(e.target.value) || 0)}
-                                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Días de Clase</label>
-                                    <div className="grid grid-cols-4 gap-2">
-                                        {Object.keys(DAY_MAPPING).filter(d => d !== 'sunday').map((day) => (
-                                            <button
-                                                key={day}
-                                                onClick={() => handleDayToggle(day)}
-                                                className={`py-2 text-xs font-bold rounded-xl border transition-all ${courseData.classDays.includes(day)
-                                                        ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-950 dark:border-indigo-900 dark:text-indigo-400'
-                                                        : 'bg-white border-slate-200 text-slate-400 dark:bg-slate-900 dark:border-slate-800 hover:border-slate-400'
-                                                    }`}
-                                            >
-                                                {DAY_NAMES[day].substring(0, 3)}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
-                                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Fechas Excluidas</h3>
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="date"
-                                            value={newExcludedDate}
-                                            onChange={(e) => setNewExcludedDate(e.target.value)}
-                                            className="flex-1 px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                                        />
-                                        <button onClick={addExcludedDate} className="p-2 bg-slate-900 dark:bg-indigo-600 text-white rounded-xl hover:opacity-90 transition-all">
-                                            <Plus size={20} />
-                                        </button>
-                                    </div>
-                                    <div className="max-h-32 overflow-y-auto custom-scrollbar space-y-1 pr-1">
-                                        {courseData.customExcludedDates.map((date) => (
-                                            <div key={date} className="flex justify-between items-center px-3 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg group">
-                                                <span className="text-xs font-medium">{date}</span>
-                                                <button onClick={() => removeExcludedDate(date)} className="text-slate-400 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all">
-                                                    <Trash2 size={14} />
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                        <CourseForm 
+                            courseData={courseData}
+                            onInputChange={handleInputChange}
+                            onDayToggle={handleDayToggle}
+                            onAddDate={addExcludedDate}
+                            onRemoveDate={removeExcludedDate}
+                        />
                     </aside>
 
                     <div className="lg:col-span-8 flex flex-col gap-6">
@@ -410,70 +325,13 @@ function App() {
                                     </div>
                                 </section>
 
-                                <section className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col h-[600px]">
-                                    {viewMode === 'list' ? (
-                                        <>
-                                            <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center no-print">
-                                                <h2 className="text-xl font-bold">Cronograma de Clases</h2>
-                                                <div className="flex gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                                                    <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-amber-400"></div> Recuperación</span>
-                                                    <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-violet-400"></div> Mitad</span>
-                                                </div>
-                                            </div>
-                                            <div className="overflow-y-auto custom-scrollbar flex-1">
-                                                <table className="w-full text-left border-collapse">
-                                                    <thead className="sticky top-0 bg-white dark:bg-slate-900 z-10 shadow-sm border-b border-slate-100 dark:border-slate-800">
-                                                        <tr>
-                                                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">#</th>
-                                                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Fecha</th>
-                                                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Horas</th>
-                                                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Progreso</th>
-                                                            <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Notas</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                                                        {schedule.map((session) => {
-                                                            const holiday = getHolidayName(session.dateStr);
-                                                            return (
-                                                                <tr key={session.number} className={`hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${session.isRecovery ? 'bg-amber-50/20 dark:bg-amber-900/5' : session.isMidCourse ? 'bg-violet-50/20 dark:bg-violet-900/5' : ''}`}>
-                                                                    <td className="px-6 py-4">
-                                                                        <span className={`text-sm font-bold ${session.isRecovery ? 'text-amber-600' : session.isMidCourse ? 'text-violet-600' : 'text-slate-400'}`}>
-                                                                            {session.number.toString().padStart(2, '0')}
-                                                                        </span>
-                                                                    </td>
-                                                                    <td className="px-6 py-4">
-                                                                        <div className="text-sm font-bold">{session.date.toLocaleDateString('es-CL', { day: '2-digit', month: 'short' })}</div>
-                                                                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">{session.dayName}</div>
-                                                                    </td>
-                                                                    <td className="px-6 py-4">
-                                                                        <div className="text-sm font-bold">{session.chronoHours}h <span className="text-[10px] font-normal text-slate-400">crono</span></div>
-                                                                        {courseData.hourType !== 'chronological' && (
-                                                                            <div className="text-[10px] font-bold text-indigo-500 uppercase">{session.effHours.toFixed(2)}h {courseData.hourType}</div>
-                                                                        )}
-                                                                    </td>
-                                                                    <td className="px-6 py-4">
-                                                                        <div className="w-24 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
-                                                                            <div className="bg-indigo-500 h-full rounded-full transition-all duration-500" style={{ width: `${(session.accHours / courseData.totalHours) * 100}%` }}></div>
-                                                                        </div>
-                                                                        <div className="text-[10px] font-bold text-slate-400">{session.accHours.toFixed(1)} hrs</div>
-                                                                    </td>
-                                                                    <td className="px-6 py-4 text-right">
-                                                                        <div className="flex flex-col items-end gap-1">
-                                                                            {holiday && <span className="px-2 py-0.5 bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 text-[9px] font-bold rounded-lg">{holiday}</span>}
-                                                                            {session.isRecovery && <span className="px-2 py-0.5 bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400 text-[9px] font-bold rounded-lg">RECUPERACIÓN</span>}
-                                                                            {session.isMidCourse && <span className="px-2 py-0.5 bg-violet-600 text-white text-[9px] font-bold rounded-lg shadow-sm">MITAD</span>}
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            );
-                                                        })}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <CalendarGrid sessions={schedule} />
-                                    )}
+                                {/* Schedule Container - Refactored into ScheduleList */}
+                                <section className={`bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col ${viewMode === 'list' ? 'h-[600px] print-h-auto' : ''}`}>
+                                    <ScheduleList 
+                                        schedule={schedule}
+                                        courseData={courseData}
+                                        viewMode={viewMode}
+                                    />
                                 </section>
                             </>
                         ) : (

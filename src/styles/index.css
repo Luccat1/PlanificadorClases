@@ -29,6 +29,8 @@
     body {
       background: white !important;
       color: black !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     .print-only {
       display: block !important;
@@ -36,6 +38,22 @@
     .card {
       border: 1px solid #ddd !important;
       box-shadow: none !important;
+      break-inside: avoid;
+    }
+
+    /* FIX: Unset fixed heights and overflows for printing */
+    .print-h-auto {
+      height: auto !important;
+      overflow: visible !important;
+    }
+    .print-overflow-visible {
+      overflow: visible !important;
+    }
+
+    /* Ensure table rows do not break awkwardly if possible */
+    tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
   }
 }
