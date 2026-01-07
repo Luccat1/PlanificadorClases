@@ -10,6 +10,7 @@ Un planificador de cursos avanzado y moderno diseñado para facilitar la creaci�
 - **Cálculo Automático**: Genera el cronograma completo basándose en la fecha de inicio, días de clase y total de horas requeridas.
 - **Sesiones de Recuperación**: Configuración de sesiones especiales con tiempo extra (30 min) para avance rápido al inicio del curso.
 - **Detección de Feriados**: Integración automática de feriados nacionales chilenos (2026) y posibilidad de añadir fechas excluidas personalizadas.
+- **Intensidad**: Métrica dinámica que calcula el **promedio de horas por semana** necesarias para completar el curso en el plazo definido.
 - **Vistas Duales**:
   - **Vista de Lista**: Detalle sesión por sesión con progreso acumulado.
   - **Vista de Calendario**: Visualización tipo cuadrícula mes a mes.

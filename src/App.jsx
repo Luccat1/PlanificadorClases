@@ -405,8 +405,8 @@ function App() {
                                     </div>
                                     <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
                                         <Calendar size={24} className="mb-4 text-amber-500" />
-                                        <p className="text-sm font-medium text-slate-500">Intensidad</p>
-                                        <h3 className="text-lg font-bold">{stats.avgHoursPerWeek} hrs <span className="text-xs font-normal text-slate-400">prom.</span></h3>
+                                        <p className="text-sm font-medium text-slate-500">Intensidad <span className="text-[10px] font-normal text-slate-400">(hrs/sem)</span></p>
+                                        <h3 className="text-lg font-bold">{stats.avgHoursPerWeek} <span className="text-xs font-normal text-slate-400">promedio</span></h3>
                                     </div>
                                 </section>
 

@@ -20,6 +20,7 @@ Este documento proporciona contexto y reglas para los agentes de IA (como Antigr
 - El corazón del proyecto es `calculateSchedule`. Cualquier cambio en la lógica de horas o fechas debe probarse cuidadosamente.
 - **DGAI**: Es un tipo de hora específico (35 min) que requiere el multiplicador `60/35`.
 - **Feriados**: Se basan en el array `CHILEAN_HOLIDAYS_2026`. Para años futuros, este array debe ser expandido o dinamizado.
+- **Intensidad**: Se calcula como `Total Horas / Semanas`. Las "semanas" se determinan por la diferencia entre fecha inicio y fin, redondeando hacia arriba.
 
 ### 3. Estética y Diseño
 
