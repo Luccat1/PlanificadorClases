@@ -32,7 +32,7 @@
 
 ### Testing
 
-- [ ] **TEST-01**: Vitest + `@vitest/coverage-v8` + React Testing Library configured in `vite.config.js` with `jsdom` environment; `npm test` and `npm run test:coverage` scripts added
+- [x] **TEST-01**: Vitest + `@vitest/coverage-v8` + React Testing Library configured in `vite.config.js` with `jsdom` environment; `npm test` and `npm run test:coverage` scripts added
 - [ ] **TEST-02**: Unit tests cover `getEffectiveHours()` for all three modes (chronological, pedagogical ×60/45, DGAI ×60/35)
 - [ ] **TEST-03**: Unit tests cover `calculateSchedule()` — session count, hour accumulation, holiday skipping, mid-course marker detection, recovery session bonus hours
 - [ ] **TEST-04**: Unit tests cover sessionsPerWeek hard cap including week-boundary edge cases (Mon–Sun rollover, courses spanning year boundaries)
@@ -70,7 +70,7 @@
 |-------------|-------|--------|
 | ARCH-01 | Phase 1 | Complete |
 | CORT-03 | Phase 1 | Complete |
-| TEST-01 | Phase 2 | Pending |
+| TEST-01 | Phase 2 | Complete |
 | TEST-02 | Phase 2 | Pending |
 | TEST-03 | Phase 2 | Pending |
 | TEST-04 | Phase 2 | Pending |

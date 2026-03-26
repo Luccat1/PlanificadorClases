@@ -48,7 +48,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Install Vitest 3 stack, configure vite.config.js test block, wire setup file and MSW scaffold
+- [x] 02-01-PLAN.md — Install Vitest 3 stack, configure vite.config.js test block, wire setup file and MSW scaffold
 - [ ] 02-02-PLAN.md — Write getEffectiveHours and calculateSchedule unit tests (TEST-02 through TEST-05)
 - [ ] 02-03-PLAN.md — Write CourseForm and ScheduleList component tests (TEST-06, TEST-07)
 
