@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
     Calendar,
     BookOpen,
@@ -19,6 +19,7 @@ import * as XLSX from 'xlsx';
 // Modular Imports
 import { DAY_NAMES, DAY_MAPPING, CHILEAN_HOLIDAYS_2026 } from './logic/constants';
 import { getEffectiveHours, formatDateLong, getHolidayName } from './logic/utils';
+import { calculateSchedule } from './logic/scheduleEngine';
 import CalendarGrid from './components/CalendarGrid';
 import CourseForm from './components/CourseForm';
 import ScheduleList from './components/ScheduleList';
@@ -59,91 +60,10 @@ function App() {
         }
     }, [courseData]);
 
-    // --- Logic Helpers ---
-
-    /**
-     * strict check if a date should be skipped in the schedule
-     */
-    const isDateExcluded = useCallback((date) => {
-        const dateStr = date.toISOString().split('T')[0];
-        const dayOfWeek = date.getDay();
-
-        if (dayOfWeek === 0) return true; // Sunday off
-        if (CHILEAN_HOLIDAYS_2026.some(h => h.date === dateStr)) return true;
-        if (courseData.customExcludedDates.includes(dateStr)) return true;
-        return false;
-    }, [courseData.customExcludedDates]);
-
-    /**
-     * Core Algorithm: Calculates the entire class schedule based on configuration.
-     * Iterates day by day until total required hours are met.
-     */
-    const calculateSchedule = useCallback(() => {
-        if (!courseData.startDate || courseData.classDays.length === 0) {
-            setSchedule([]);
-            return;
-        }
-
-        const startObj = new Date(courseData.startDate + 'T00:00:00');
-        const targetDayNums = courseData.classDays.map((d) => DAY_MAPPING[d]);
-
-        const effNormal = getEffectiveHours(courseData.hoursPerSession, courseData.hourType);
-        const effRecovery = getEffectiveHours(courseData.hoursPerSession + 0.5, courseData.hourType);
-
-        if (effNormal <= 0) {
-            setSchedule([]);
-            return;
-        }
-
-        let sessions = [];
-        let current = new Date(startObj);
-        let sessionCount = 0;
-        let accumulatedEff = 0;
-        let midCourseFound = false;
-        let safetyCounter = 0;
-
-        const totalHoursNeeded = courseData.totalHours;
-
-        // Loop until we reach the target hours or hit a safety limit
-        while (accumulatedEff < totalHoursNeeded && safetyCounter < 1500) {
-            const dayNum = current.getDay();
-
-            if (targetDayNums.includes(dayNum) && !isDateExcluded(current)) {
-                sessionCount++;
-                const isRecovery = sessionCount <= courseData.recoverySessionsCount;
-                const currentEff = isRecovery ? effRecovery : effNormal;
-
-                const prevEff = accumulatedEff;
-                accumulatedEff += currentEff;
-
-                const isMid = !midCourseFound && prevEff < (totalHoursNeeded / 2) && accumulatedEff >= (totalHoursNeeded / 2);
-                if (isMid) midCourseFound = true;
-
-                const dayKey = Object.keys(DAY_MAPPING).find((key) => DAY_MAPPING[key] === dayNum) || 'monday';
-
-                sessions.push({
-                    number: sessionCount,
-                    date: new Date(current),
-                    dateStr: current.toISOString().split('T')[0],
-                    dayName: DAY_NAMES[dayKey],
-                    isRecovery,
-                    isMidCourse: isMid,
-                    chronoHours: isRecovery ? courseData.hoursPerSession + 0.5 : courseData.hoursPerSession,
-                    effHours: currentEff,
-                    accHours: accumulatedEff
-                });
-            }
-
-            current.setDate(current.getDate() + 1);
-            safetyCounter++;
-        }
-
-        setSchedule(sessions);
-    }, [courseData, isDateExcluded]);
-
+    // --- Schedule Generation ---
     useEffect(() => {
-        calculateSchedule();
-    }, [courseData, calculateSchedule]);
+        setSchedule(calculateSchedule(courseData, CHILEAN_HOLIDAYS_2026));
+    }, [courseData]);
 
     // --- Handlers ---
     
