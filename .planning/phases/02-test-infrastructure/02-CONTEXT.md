@@ -1,6 +1,6 @@
 # Phase 2: Test Infrastructure - Context
 
-**Gathered:** 2026-03-26
+**Gathered:** 2026-03-26 (updated)
 **Status:** Ready for planning
 
 <domain>
@@ -14,25 +14,46 @@ Install Vitest + React Testing Library + MSW, configure the test runner, and wri
 ## Implementation Decisions
 
 ### Test Runner Setup
-- **D-01:** Vitest is the test runner (already decided — native Vite integration, zero config conflict). Configure inside `vite.config.js` under `test:` key with `environment: 'jsdom'`.
-- **D-02:** `@vitest/coverage-v8` for coverage. Add `npm test` and `npm run test:coverage` scripts to `package.json`. Coverage generates a report only — no minimum threshold enforced.
+- **D-01:** Vitest 3 is the test runner (Vitest 3.x targets Vite 5+ and is forward-compatible with Vite 7.3.1). Install `vitest@3` and `@vitest/coverage-v8@3`. Researcher must confirm exact peer-dep requirements for Vite 7 compatibility before pinning.
+- **D-02:** Configure inside `vite.config.js` under the `test:` key with `environment: 'jsdom'`. Do not create a separate vitest config file — extend the existing config.
+- **D-03:** Add `npm test` and `npm run test:coverage` scripts to `package.json`. Coverage generates a report only (stdout + `coverage/` directory) — no minimum threshold enforced.
+
+### RTL and Extended Matchers
+- **D-04:** Install `@testing-library/react` and `@testing-library/user-event` for component tests.
+- **D-05:** Install `@testing-library/jest-dom` for extended DOM matchers (`toBeInTheDocument`, `toHaveValue`, `toBeDisabled`, etc.). Import in the Vitest global setup file so matchers are available in all tests without explicit imports.
 
 ### Test File Organization
-- **D-03:** Co-located `__tests__/` directories. Logic tests go in `src/logic/__tests__/`, component tests in `src/components/__tests__/`. Test files named `{subject}.test.{js,jsx}`.
+- **D-06:** Co-located `__tests__/` directories. Logic tests go in `src/logic/__tests__/`, component tests in `src/components/__tests__/`. Test files named `{subject}.test.{js,jsx}`.
+
+### Component Test Scope
+- **D-07:** Phase 2 tests CourseForm (TEST-06) and ScheduleList (TEST-07) only. CalendarGrid is a display-only component and is NOT tested in Phase 2.
+
+### Component Test Interaction Approach
+- **D-08:** CourseForm tests use a small wrapper component that holds real state (same pattern as actual usage in App.jsx). Fire `userEvent.type` / `userEvent.clear` to trigger input changes, then assert displayed validation error messages. This tests the full input → state → render flow rather than just static props.
 
 ### MSW Setup
-- **D-04:** Install MSW in Phase 2 as part of the test infrastructure foundation (minimal scaffold). Install the `msw` package, create `src/mocks/handlers.js` (empty array export) and `src/mocks/server.js` (MSW Node server for tests) wired into the Vitest setup file. No active handlers yet — Phase 4 adds the holiday API handlers when needed.
+- **D-09:** Install MSW in Phase 2 as part of the test infrastructure foundation (minimal scaffold only). Create `src/mocks/handlers.js` (empty array export) and `src/mocks/server.js` (MSW Node server wired into the Vitest setup file with standard beforeAll/afterEach/afterAll lifecycle). No active handlers yet — Phase 4 adds the nager.date holiday API handlers when needed.
 
 ### Coverage
-- **D-05:** `npm run test:coverage` generates a report (stdout + `coverage/` directory) with no enforced threshold. Thresholds can be added later once baseline is established.
+- **D-10:** `npm run test:coverage` generates a report (stdout + `coverage/` directory) with no enforced threshold. Thresholds can be added later once baseline is established.
 
 ### Claude's Discretion
 - Exact Vitest config options (globals, include patterns, exclude patterns) — Claude decides based on project structure
 - Whether to use `describe`/`it` or `test` naming convention inside test files
 - Setup file name and location (e.g., `src/test-setup.js`)
-- MSW server.js lifecycle hooks (beforeAll/afterEach/afterAll) — standard RTL pattern applies
+- MSW server.js lifecycle hooks — standard RTL pattern applies
+- Whether to add `data-testid` attributes to components or use semantic `getByRole` / `getByLabelText` queries (prefer semantic queries where feasible)
 
 </decisions>
+
+<specifics>
+## Specific Ideas
+
+- **TEST-05 (timezone):** Must construct dates as `new Date(year, month, day)` using local constructors (not `new Date('YYYY-MM-DD')` which parses as UTC midnight). The test should explicitly verify a session date is correct when the system timezone is UTC-3. This is the validation gate for the `toLocalDateStr` fix from Phase 1.
+- **TEST-04 (sessionsPerWeek year boundary):** Must cover a course spanning December/January with `sessionsPerWeek: 1`. The Mon–Sun week key rollover at year boundaries is the edge case.
+- **@testing-library/jest-dom setup:** Import via the Vitest setup file so `expect.extend(matchers)` is called once globally — not imported per test file.
+
+</specifics>
 
 <canonical_refs>
 ## Canonical References
@@ -47,8 +68,8 @@ Install Vitest + React Testing Library + MSW, configure the test runner, and wri
 - `src/components/ScheduleList.jsx` — component under test (TEST-07)
 
 ### Project Config
-- `vite.config.js` — must be extended (not replaced) with `test:` block
-- `package.json` — add `test` and `test:coverage` scripts
+- `vite.config.js` — must be extended (not replaced) with `test:` block; `base: './'` and `react` plugin must be preserved
+- `package.json` — add `test` and `test:coverage` scripts only; do not modify existing scripts
 
 ### Requirements
 - `.planning/REQUIREMENTS.md` §Testing (TEST-01 through TEST-07) — all seven must be satisfied
@@ -62,27 +83,20 @@ No external specs — requirements fully captured in decisions above.
 
 ### Reusable Assets
 - `src/logic/scheduleEngine.js` — pure functions with no React imports; ideal for unit testing without mocks
-- `src/components/CourseForm.jsx` — accepts all state as props (`courseData`, `onInputChange`, `onDayToggle`, `onAddDate`, `onRemoveDate`) — straightforward to render in isolation with mock props
+- `src/components/CourseForm.jsx` — accepts all state as props (`courseData`, `onInputChange`, `onDayToggle`, `onAddDate`, `onRemoveDate`) — testable via wrapper component pattern (D-08)
+- `src/components/ScheduleList.jsx` — accepts `schedule` array as prop — straightforward to render with mock schedule data
 
 ### Established Patterns
 - No existing test patterns — Phase 2 establishes the project standard
-- Props-down pattern in components (CourseForm, ScheduleList) makes shallow rendering practical
-- ESM modules (`"type": "module"` in package.json) — Vitest handles this natively
+- Props-down pattern in all components (CourseForm, ScheduleList, CalendarGrid) makes wrapper-based testing practical
+- ESM modules (`"type": "module"` in package.json) — Vitest handles this natively, no transformation config needed
 
 ### Integration Points
-- `vite.config.js` — the `test:` block extends the existing config (base: './' and react plugin must stay)
+- `vite.config.js` — the `test:` block extends the existing config
 - `package.json` scripts — append `test` and `test:coverage`; do not modify existing scripts
+- Vitest setup file (e.g., `src/test-setup.js`) — wires @testing-library/jest-dom matchers and MSW server lifecycle
 
 </code_context>
-
-<specifics>
-## Specific Ideas
-
-- TEST-05 (timezone): Must construct dates as `new Date(year, month, day)` using local constructors (not `new Date('YYYY-MM-DD')` which parses as UTC midnight) — this is the exact pattern that `toLocalDateStr` in `scheduleEngine.js` was designed for. The test should explicitly verify a session date is correct when the system timezone is UTC-3.
-- The STATE.md blocker: "Timezone bug in `date.toISOString()` must be fixed during algorithm extraction — fix must be validated in Phase 2 with an explicit UTC-3 test" — TEST-05 is the validation gate for this.
-- sessionsPerWeek edge case (TEST-04): must cover year-boundary case where a course spans December/January with `sessionsPerWeek: 1`.
-
-</specifics>
 
 <deferred>
 ## Deferred Ideas
@@ -94,4 +108,4 @@ None — discussion stayed within phase scope.
 ---
 
 *Phase: 02-test-infrastructure*
-*Context gathered: 2026-03-26*
+*Context gathered: 2026-03-26 (updated)*
