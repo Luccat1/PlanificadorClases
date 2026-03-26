@@ -45,8 +45,12 @@ Plans:
   4. sessionsPerWeek cap tests pass including year-boundary edge cases (course spanning December/January with `sessionsPerWeek: 1`)
   5. A Vitest test explicitly constructs dates at UTC-3 offset and asserts schedule dates are correct
   6. CourseForm component test verifies field changes propagate and validation errors appear for invalid inputs; ScheduleList component test verifies correct session row count and mid-course marker position
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Install Vitest 3 stack, configure vite.config.js test block, wire setup file and MSW scaffold
+- [ ] 02-02-PLAN.md — Write getEffectiveHours and calculateSchedule unit tests (TEST-02 through TEST-05)
+- [ ] 02-03-PLAN.md — Write CourseForm and ScheduleList component tests (TEST-06, TEST-07)
 
 ### Phase 3: Hook Extraction and Persistence
 **Goal**: App.jsx is reduced to an orchestration shell (~80 lines); course data state, schedule state, dark mode, and view mode all live in focused custom hooks with proper localStorage persistence
@@ -91,8 +95,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Algorithm Extraction | 0/1 | Not started | - |
-| 2. Test Infrastructure | 0/TBD | Not started | - |
+| 1. Algorithm Extraction | 1/1 | Complete | 2026-03-26 |
+| 2. Test Infrastructure | 0/3 | Not started | - |
 | 3. Hook Extraction and Persistence | 0/TBD | Not started | - |
 | 4. Holiday API Integration | 0/TBD | Not started | - |
 | 5. Validation, Export, and UX | 0/TBD | Not started | - |
