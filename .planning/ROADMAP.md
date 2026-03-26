@@ -12,7 +12,7 @@ This milestone upgrades a working baseline into a trustworthy, maintainable tool
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Algorithm Extraction** - Extract scheduling logic to a pure, testable module and wire sessionsPerWeek cap
+- [x] **Phase 1: Algorithm Extraction** - Extract scheduling logic to a pure, testable module and wire sessionsPerWeek cap
 - [ ] **Phase 2: Test Infrastructure** - Install Vitest + RTL + MSW and cover scheduling logic with unit and component tests
 - [ ] **Phase 3: Hook Extraction and Persistence** - Extract state into custom hooks; add dark mode and view mode persistence
 - [ ] **Phase 4: Holiday API Integration** - Replace hardcoded holiday array with live nager.date API fetch and localStorage cache
