@@ -73,7 +73,12 @@ Plans:
   2. After the first fetch for a year, refreshing the page does not trigger a new network request for the same year — the cached data is used (verifiable via browser DevTools network tab)
   3. When the nager.date API is unreachable and no cache exists for the requested year, a warning banner appears above the schedule and generation proceeds using only custom excluded dates — the app does not crash or silently skip generation
   4. A course spanning two calendar years (e.g., November 2026 through March 2027) fetches and caches holiday data for both years, and holidays from both years are correctly skipped
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Create MSW handlers + fetchHolidaysForYear service with cache logic and unit tests (ARCH-04)
+- [ ] 04-02-PLAN.md — Create useHolidays hook with multi-year fetch, merge, and graceful degradation + hook tests (ARCH-04, CORT-02)
+- [ ] 04-03-PLAN.md — Wire useHolidays into App.jsx, update getHolidayName signature, add warning banner, human verify (ARCH-04, CORT-02)
 
 ### Phase 5: Validation, Export, and UX
 **Goal**: Invalid inputs are blocked at the form level with inline error messages; exports carry a professor-facing metadata header; recovery session extra minutes are configurable
@@ -98,5 +103,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Algorithm Extraction | 1/1 | Complete | 2026-03-26 |
 | 2. Test Infrastructure | 3/3 | Complete   | 2026-03-26 |
 | 3. Hook Extraction and Persistence | 0/TBD | Not started | - |
-| 4. Holiday API Integration | 0/TBD | Not started | - |
+| 4. Holiday API Integration | 0/3 | Not started | - |
 | 5. Validation, Export, and UX | 0/TBD | Not started | - |
