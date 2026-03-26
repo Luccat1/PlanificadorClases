@@ -25,6 +25,7 @@ Accurate, trustworthy schedule generation that professors can hand to students o
 - ✓ Dark mode toggle — existing
 - ✓ List view and calendar grid view — existing
 - ✓ Custom date exclusions (ad-hoc holidays/events) — existing
+- ✓ Full test suite — Vitest 3 + RTL + MSW scaffold; 33 tests covering `getEffectiveHours`, `calculateSchedule` (session count, holiday skip, sessionsPerWeek cap, year-boundary, UTC-3 timezone), CourseForm (field propagation, day toggle), ScheduleList (row count, mid-course/recovery markers) — Validated in Phase 2: Test Infrastructure
 
 ### Active
 
@@ -93,4 +94,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after initialization*
+*Last updated: 2026-03-26 after Phase 2 completion*
