@@ -50,7 +50,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Install Vitest 3 stack, configure vite.config.js test block, wire setup file and MSW scaffold
 - [ ] 02-02-PLAN.md — Write getEffectiveHours and calculateSchedule unit tests (TEST-02 through TEST-05)
-- [ ] 02-03-PLAN.md — Write CourseForm and ScheduleList component tests (TEST-06, TEST-07)
+- [x] 02-03-PLAN.md — Write CourseForm and ScheduleList component tests (TEST-06, TEST-07)
 
 ### Phase 3: Hook Extraction and Persistence
 **Goal**: App.jsx is reduced to an orchestration shell (~80 lines); course data state, schedule state, dark mode, and view mode all live in focused custom hooks with proper localStorage persistence

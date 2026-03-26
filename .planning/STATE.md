@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-03-26T20:09:14.152Z"
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-03-26T20:15:10.670Z"
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 4
-  completed_plans: 2
+  completed_plans: 3
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-03-26)
 ## Current Position
 
 Phase: 02 (test-infrastructure) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -48,6 +48,7 @@ Plan: 2 of 3
 *Updated after each plan completion*
 | Phase 01-algorithm-extraction P01 | 5 | 2 tasks | 2 files |
 | Phase 02 P01 | 5 | 2 tasks | 5 files |
+| Phase 02-test-infrastructure P03 | 15 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,8 @@ Recent decisions affecting current work:
 - [Phase 01-algorithm-extraction]: sessionsPerWeek=0 treated as uncapped via guard (> 0); Map<weekKey,count> used for Mon-Sun cap (CORT-03)
 - [Phase 02-test-infrastructure]: passWithNoTests: true added to vite.config.js test block so npm test exits 0 before any test files exist
 - [Phase 02-test-infrastructure]: vitest@3 (3.2.4) confirmed compatible with vite@7.3.1 — Vite7+Vitest3 blocker resolved
+- [Phase 02-test-infrastructure]: Wrapper component pattern (D-08) used for CourseForm tests — real useState propagation, not mocks
+- [Phase 02-test-infrastructure]: makeSession uses local Date constructor (not ISO string) to avoid UTC offset in jsdom
 
 ### Pending Todos
 
@@ -77,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T20:09:14.108Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-03-26T20:15:10.656Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None

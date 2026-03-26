@@ -37,8 +37,8 @@
 - [ ] **TEST-03**: Unit tests cover `calculateSchedule()` — session count, hour accumulation, holiday skipping, mid-course marker detection, recovery session bonus hours
 - [ ] **TEST-04**: Unit tests cover sessionsPerWeek hard cap including week-boundary edge cases (Mon–Sun rollover, courses spanning year boundaries)
 - [ ] **TEST-05**: Unit tests cover timezone edge case (schedule dates correct in UTC-3/UTC-4 offset)
-- [ ] **TEST-06**: Component tests cover CourseForm — field changes propagate correctly, validation errors appear for invalid inputs
-- [ ] **TEST-07**: Component tests cover ScheduleList — renders correct number of session rows, mid-course marker appears at correct position
+- [x] **TEST-06**: Component tests cover CourseForm — field changes propagate correctly, validation errors appear for invalid inputs
+- [x] **TEST-07**: Component tests cover ScheduleList — renders correct number of session rows, mid-course marker appears at correct position
 
 ## v2 Requirements
 
@@ -75,8 +75,8 @@
 | TEST-03 | Phase 2 | Pending |
 | TEST-04 | Phase 2 | Pending |
 | TEST-05 | Phase 2 | Pending |
-| TEST-06 | Phase 2 | Pending |
-| TEST-07 | Phase 2 | Pending |
+| TEST-06 | Phase 2 | Complete |
+| TEST-07 | Phase 2 | Complete |
 | ARCH-02 | Phase 3 | Pending |
 | ARCH-03 | Phase 3 | Pending |
 | PERS-01 | Phase 3 | Pending |
