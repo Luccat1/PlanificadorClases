@@ -102,6 +102,14 @@ None - no external service configuration required.
 - Full suite (11 tests across 2 files) passes; ready for Phase 3 work
 - Wrapper pattern and makeSession helper can be referenced for any additional component tests in future phases
 
+## Self-Check: PASSED
+
+- FOUND: src/components/__tests__/CourseForm.test.jsx
+- FOUND: src/components/__tests__/ScheduleList.test.jsx
+- FOUND: .planning/phases/02-test-infrastructure/02-03-SUMMARY.md
+- FOUND commit: 9b31115 (CourseForm tests)
+- FOUND commit: 455fe77 (ScheduleList tests)
+
 ---
 *Phase: 02-test-infrastructure*
 *Completed: 2026-03-26*
