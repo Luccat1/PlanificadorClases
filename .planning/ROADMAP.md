@@ -29,7 +29,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. App behavior after extraction is identical to before — same sessions, same hours, same holiday skipping — verifiable by manual test of an existing course
   3. A course with `sessionsPerWeek: 2` and three class days (Mon/Wed/Fri) schedules at most two sessions per calendar week, skipping the third qualifying day each week
   4. The timezone bug is fixed: schedule dates are correct when the browser is set to UTC-3/UTC-4 (dates no longer shift by one day)
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [x] 01-01-PLAN.md — Create scheduleEngine.js pure module and wire App.jsx
 
 ### Phase 2: Test Infrastructure
 **Goal**: A working Vitest + React Testing Library + MSW test suite validates the scheduling algorithm and key components, proving the Phase 1 extraction preserved correctness
@@ -88,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Algorithm Extraction | 0/TBD | Not started | - |
+| 1. Algorithm Extraction | 0/1 | Not started | - |
 | 2. Test Infrastructure | 0/TBD | Not started | - |
 | 3. Hook Extraction and Persistence | 0/TBD | Not started | - |
 | 4. Holiday API Integration | 0/TBD | Not started | - |
