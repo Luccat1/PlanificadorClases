@@ -33,10 +33,10 @@
 ### Testing
 
 - [x] **TEST-01**: Vitest + `@vitest/coverage-v8` + React Testing Library configured in `vite.config.js` with `jsdom` environment; `npm test` and `npm run test:coverage` scripts added
-- [ ] **TEST-02**: Unit tests cover `getEffectiveHours()` for all three modes (chronological, pedagogical ×60/45, DGAI ×60/35)
-- [ ] **TEST-03**: Unit tests cover `calculateSchedule()` — session count, hour accumulation, holiday skipping, mid-course marker detection, recovery session bonus hours
-- [ ] **TEST-04**: Unit tests cover sessionsPerWeek hard cap including week-boundary edge cases (Mon–Sun rollover, courses spanning year boundaries)
-- [ ] **TEST-05**: Unit tests cover timezone edge case (schedule dates correct in UTC-3/UTC-4 offset)
+- [x] **TEST-02**: Unit tests cover `getEffectiveHours()` for all three modes (chronological, pedagogical ×60/45, DGAI ×60/35)
+- [x] **TEST-03**: Unit tests cover `calculateSchedule()` — session count, hour accumulation, holiday skipping, mid-course marker detection, recovery session bonus hours
+- [x] **TEST-04**: Unit tests cover sessionsPerWeek hard cap including week-boundary edge cases (Mon–Sun rollover, courses spanning year boundaries)
+- [x] **TEST-05**: Unit tests cover timezone edge case (schedule dates correct in UTC-3/UTC-4 offset)
 - [x] **TEST-06**: Component tests cover CourseForm — field changes propagate correctly, validation errors appear for invalid inputs
 - [x] **TEST-07**: Component tests cover ScheduleList — renders correct number of session rows, mid-course marker appears at correct position
 
@@ -71,10 +71,10 @@
 | ARCH-01 | Phase 1 | Complete |
 | CORT-03 | Phase 1 | Complete |
 | TEST-01 | Phase 2 | Complete |
-| TEST-02 | Phase 2 | Pending |
-| TEST-03 | Phase 2 | Pending |
-| TEST-04 | Phase 2 | Pending |
-| TEST-05 | Phase 2 | Pending |
+| TEST-02 | Phase 2 | Complete |
+| TEST-03 | Phase 2 | Complete |
+| TEST-04 | Phase 2 | Complete |
+| TEST-05 | Phase 2 | Complete |
 | TEST-06 | Phase 2 | Complete |
 | TEST-07 | Phase 2 | Complete |
 | ARCH-02 | Phase 3 | Pending |

@@ -13,7 +13,7 @@ This milestone upgrades a working baseline into a trustworthy, maintainable tool
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Algorithm Extraction** - Extract scheduling logic to a pure, testable module and wire sessionsPerWeek cap
-- [ ] **Phase 2: Test Infrastructure** - Install Vitest + RTL + MSW and cover scheduling logic with unit and component tests
+- [x] **Phase 2: Test Infrastructure** - Install Vitest + RTL + MSW and cover scheduling logic with unit and component tests (completed 2026-03-26)
 - [ ] **Phase 3: Hook Extraction and Persistence** - Extract state into custom hooks; add dark mode and view mode persistence
 - [ ] **Phase 4: Holiday API Integration** - Replace hardcoded holiday array with live nager.date API fetch and localStorage cache
 - [ ] **Phase 5: Validation, Export, and UX** - Add inline input validation, export metadata header, and configurable recovery minutes
@@ -49,7 +49,7 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md — Install Vitest 3 stack, configure vite.config.js test block, wire setup file and MSW scaffold
-- [ ] 02-02-PLAN.md — Write getEffectiveHours and calculateSchedule unit tests (TEST-02 through TEST-05)
+- [x] 02-02-PLAN.md — Write getEffectiveHours and calculateSchedule unit tests (TEST-02 through TEST-05)
 - [x] 02-03-PLAN.md — Write CourseForm and ScheduleList component tests (TEST-06, TEST-07)
 
 ### Phase 3: Hook Extraction and Persistence
@@ -96,7 +96,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Algorithm Extraction | 1/1 | Complete | 2026-03-26 |
-| 2. Test Infrastructure | 0/3 | Not started | - |
+| 2. Test Infrastructure | 3/3 | Complete   | 2026-03-26 |
 | 3. Hook Extraction and Persistence | 0/TBD | Not started | - |
 | 4. Holiday API Integration | 0/TBD | Not started | - |
 | 5. Validation, Export, and UX | 0/TBD | Not started | - |
