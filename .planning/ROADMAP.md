@@ -93,7 +93,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Extend INITIAL_COURSE_DATA (4 new fields), fix recoveryExtraMinutes engine, extend calculateSchedule tests (CORT-04, EXPO-01 data)
+- [x] 05-01-PLAN.md — Extend INITIAL_COURSE_DATA (4 new fields), fix recoveryExtraMinutes engine, extend calculateSchedule tests (CORT-04, EXPO-01 data)
 - [ ] 05-02-PLAN.md — Add new form fields and inline validation to CourseForm, extend CourseForm tests (CORT-01, EXPO-01 UI)
 - [ ] 05-03-PLAN.md — Add schedule validity guard to useSchedule, update App.jsx Excel/print exports and footer copy (CORT-01 guard, EXPO-02, EXPO-03)
 
@@ -108,4 +108,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Test Infrastructure | 3/3 | Complete   | 2026-03-26 |
 | 3. Hook Extraction and Persistence | 3/3 | Complete | 2026-03-27 |
 | 4. Holiday API Integration | 3/3 | Complete | 2026-03-27 |
-| 5. Validation, Export, and UX | 0/3 | Not started | - |
+| 5. Validation, Export, and UX | 1/3 | In Progress|  |

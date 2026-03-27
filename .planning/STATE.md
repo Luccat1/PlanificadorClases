@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Phase 5 context gathered
-last_updated: "2026-03-27T20:31:22.959Z"
+status: Ready to execute
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-27T20:53:36.280Z"
 progress:
   total_phases: 5
   completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 13
+  completed_plans: 11
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-26)
 
 **Core value:** Accurate, trustworthy schedule generation that professors can hand to students on day one.
-**Current focus:** Phase 03 — hook-extraction-and-persistence
+**Current focus:** Phase 05 — validation-export-and-ux
 
 ## Current Position
 
-Phase: 04
-Plan: Not started
+Phase: 05 (validation-export-and-ux) — EXECUTING
+Plan: 2 of 3
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Plan: Not started
 | Phase 03-hook-extraction-and-persistence P01 | 3 | 3 tasks | 3 files |
 | Phase 03-hook-extraction-and-persistence P02 | 2 | 2 tasks | 2 files |
 | Phase 03-hook-extraction-and-persistence P03 | 15 | 1 tasks | 1 files |
+| Phase 05-validation-export-and-ux P01 | 12 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,9 @@ Recent decisions affecting current work:
 - [Phase 03-hook-extraction-and-persistence]: useSchedule uses useMemo not useEffect+setState — synchronous derivation avoids stale render frame
 - [Phase 03-hook-extraction-and-persistence]: darkMode lazy initializer reads localStorage first; falls back to prefers-color-scheme on first visit
 - [Phase 03-hook-extraction-and-persistence]: App.jsx wired to useCourseData and useSchedule hooks; no raw useState for course fields or direct calculateSchedule calls
+- [Phase 05-validation-export-and-ux]: D-12 fields added to INITIAL_COURSE_DATA: semester, professorName, contactEmail, recoveryExtraMinutes (default 30)
+- [Phase 05-validation-export-and-ux]: Merge initializer: { ...INITIAL_COURSE_DATA, ...JSON.parse(saved) } — backward-compatible with old localStorage blobs
+- [Phase 05-validation-export-and-ux]: recoveryBonusHours = (courseData.recoveryExtraMinutes ?? 30) / 60 — dynamic recovery bonus replaces hardcoded +0.5 in scheduleEngine
 
 ### Pending Todos
 
@@ -101,6 +105,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T20:31:22.953Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-validation-export-and-ux/05-CONTEXT.md
+Last session: 2026-03-27T20:53:36.276Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None
