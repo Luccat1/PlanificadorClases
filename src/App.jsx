@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
     Calendar,
     BookOpen,
@@ -17,12 +17,11 @@ import {
 import * as XLSX from 'xlsx';
 
 // Modular Imports
-import { DAY_NAMES, DAY_MAPPING } from './logic/constants';
+// Removed unused DAY_NAMES, DAY_MAPPING
 import { useHolidays } from './hooks/useHolidays.js';
 import { useCourseData } from './hooks/useCourseData.js';
 import { useSchedule } from './hooks/useSchedule.js';
-import { getEffectiveHours, formatDateLong, getHolidayName } from './logic/utils';
-import CalendarGrid from './components/CalendarGrid';
+import { formatDateLong, getHolidayName } from './logic/utils';
 import CourseForm from './components/CourseForm';
 import ScheduleList from './components/ScheduleList';
 

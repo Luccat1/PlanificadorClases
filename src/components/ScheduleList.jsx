@@ -1,4 +1,4 @@
-import React from 'react';
+
 import CalendarGrid from './CalendarGrid';
 import { getHolidayName } from '../logic/utils';
 

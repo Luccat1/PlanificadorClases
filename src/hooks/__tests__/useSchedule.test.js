@@ -99,7 +99,7 @@ describe('useSchedule — reactivity', () => {
         const { result: noHoliday } = renderHook(() =>
             useSchedule(BASE_COURSE, [])
         );
-        const firstSession = noHoliday.result?.current?.[0]?.dateStr ?? noHoliday.current?.[0]?.dateStr;
+        const _firstSession = noHoliday.result?.current?.[0]?.dateStr ?? noHoliday.current?.[0]?.dateStr;
         // Get first session date from BASE_COURSE (2026-03-02 Monday)
         const { result: withHoliday } = renderHook(() =>
             useSchedule(BASE_COURSE, [{ date: '2026-03-02', name: 'Feriado Test' }])
