@@ -10,6 +10,7 @@ const base = {
     recoverySessionsCount: 0,
     sessionsPerWeek: 0,               // 0 = uncapped
     customExcludedDates: [],
+    recoveryExtraMinutes: 30,
 }
 
 // ─── TEST-03: calculateSchedule correctness ───────────────────────────────────
@@ -154,5 +155,30 @@ describe('calculateSchedule — timezone correctness (TEST-05)', () => {
         expect(d.getFullYear()).toBe(2026)
         expect(d.getMonth()).toBe(2)   // 0-indexed: 2 = March
         expect(d.getDate()).toBe(2)
+    })
+})
+
+// ─── CORT-04: configurable recovery bonus ────────────────────────────────────
+
+describe('calculateSchedule — configurable recovery bonus (CORT-04)', () => {
+    it('recoveryExtraMinutes=15: recovery session chronoHours = hoursPerSession + 0.25', () => {
+        const sessions = calculateSchedule({
+            ...base,
+            recoverySessionsCount: 1,
+            recoveryExtraMinutes: 15,
+            hoursPerSession: 2,
+            totalHours: 10,
+        }, [])
+        const recovery = sessions.find(s => s.isRecovery)
+        expect(recovery).toBeDefined()
+        expect(recovery.chronoHours).toBeCloseTo(2.25)
+    })
+
+    it('recoveryExtraMinutes missing (old courseData): defaults to 30-min bonus (chronoHours = hoursPerSession + 0.5)', () => {
+        const { recoveryExtraMinutes: _dropped, ...oldBase } = { ...base, recoverySessionsCount: 1, hoursPerSession: 2, totalHours: 10 }
+        const sessions = calculateSchedule(oldBase, [])
+        const recovery = sessions.find(s => s.isRecovery)
+        expect(recovery).toBeDefined()
+        expect(recovery.chronoHours).toBeCloseTo(2.5)
     })
 })

@@ -10,24 +10,24 @@
 - [ ] **CORT-01**: App validates form inputs inline (negative hours, zero session length, no class days selected, missing start date) and blocks schedule generation until inputs are valid — showing errors next to the offending field, not a global alert
 - [x] **CORT-02**: Holiday data is fetched from nager.date API per calendar year needed, cached in localStorage keyed by year (`holidays_CL_{year}`), with a non-blocking warning banner when API and cache both fail — schedule generation proceeds using only custom excluded dates
 - [x] **CORT-03**: `sessionsPerWeek` field enforces a hard cap on sessions scheduled per calendar week (Mon–Sun) in the algorithm — a `sessionsPerWeek: 2` with Mon/Wed/Fri class days skips the third qualifying day each week
-- [ ] **CORT-04**: Professor can configure the extra minutes added per recovery session (replaces the hardcoded +30 min constant) — input stored in `courseData`, default value 30
+- [x] **CORT-04**: Professor can configure the extra minutes added per recovery session (replaces the hardcoded +30 min constant) — input stored in `courseData`, default value 30
 
 ### Persistence
 
-- [ ] **PERS-01**: Dark mode preference is persisted in localStorage and survives page refresh — on first visit defaults to `prefers-color-scheme` system preference
-- [ ] **PERS-02**: View mode selection (list / calendar grid) is persisted in localStorage and survives page refresh — default is `'list'`
+- [x] **PERS-01**: Dark mode preference is persisted in localStorage and survives page refresh — on first visit defaults to `prefers-color-scheme` system preference
+- [x] **PERS-02**: View mode selection (list / calendar grid) is persisted in localStorage and survives page refresh — default is `'list'`
 
 ### Export
 
-- [ ] **EXPO-01**: CourseForm includes fields for semester, professor name, and contact email (in addition to existing course name field)
+- [x] **EXPO-01**: CourseForm includes fields for semester, professor name, and contact email (in addition to existing course name field)
 - [ ] **EXPO-02**: Excel export includes a metadata header block (3–4 rows) at the top of the sheet showing course name, semester, professor name, and contact email before the session rows
 - [ ] **EXPO-03**: Print/PDF output includes a metadata header block showing course name, semester, professor name, and contact email above the schedule table
 
 ### Architecture
 
 - [x] **ARCH-01**: Scheduling logic extracted to `src/logic/scheduleEngine.js` as pure functions (`calculateSchedule`, `getEffectiveHours`, `isDateExcluded`) with no React dependencies — takes all inputs as parameters, returns value
-- [ ] **ARCH-02**: Course data state and localStorage persistence extracted to `src/hooks/useCourseData.js` custom hook
-- [ ] **ARCH-03**: Schedule calculation state extracted to `src/hooks/useSchedule.js` custom hook that consumes `scheduleEngine.js`
+- [x] **ARCH-02**: Course data state and localStorage persistence extracted to `src/hooks/useCourseData.js` custom hook
+- [x] **ARCH-03**: Schedule calculation state extracted to `src/hooks/useSchedule.js` custom hook that consumes `scheduleEngine.js`
 - [x] **ARCH-04**: Holiday API fetch and cache logic extracted to `src/services/holidayApi.js` (pure async function) wrapped by `src/hooks/useHolidays.js` hook with year-keyed localStorage caching and fallback
 
 ### Testing
@@ -77,15 +77,15 @@
 | TEST-05 | Phase 2 | Complete |
 | TEST-06 | Phase 2 | Complete |
 | TEST-07 | Phase 2 | Complete |
-| ARCH-02 | Phase 3 | Pending |
-| ARCH-03 | Phase 3 | Pending |
-| PERS-01 | Phase 3 | Pending |
-| PERS-02 | Phase 3 | Pending |
+| ARCH-02 | Phase 3 | Complete |
+| ARCH-03 | Phase 3 | Complete |
+| PERS-01 | Phase 3 | Complete |
+| PERS-02 | Phase 3 | Complete |
 | ARCH-04 | Phase 4 | Complete |
 | CORT-02 | Phase 4 | Complete |
 | CORT-01 | Phase 5 | Pending |
-| CORT-04 | Phase 5 | Pending |
-| EXPO-01 | Phase 5 | Pending |
+| CORT-04 | Phase 5 | Complete |
+| EXPO-01 | Phase 5 | Complete |
 | EXPO-02 | Phase 5 | Pending |
 | EXPO-03 | Phase 5 | Pending |
 

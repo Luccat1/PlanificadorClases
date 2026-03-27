@@ -19,90 +19,52 @@ import * as XLSX from 'xlsx';
 // Modular Imports
 import { DAY_NAMES, DAY_MAPPING } from './logic/constants';
 import { useHolidays } from './hooks/useHolidays.js';
+import { useCourseData } from './hooks/useCourseData.js';
+import { useSchedule } from './hooks/useSchedule.js';
 import { getEffectiveHours, formatDateLong, getHolidayName } from './logic/utils';
-import { calculateSchedule } from './logic/scheduleEngine';
 import CalendarGrid from './components/CalendarGrid';
 import CourseForm from './components/CourseForm';
 import ScheduleList from './components/ScheduleList';
 
 function App() {
-    // --- State Initialization ---
-    // Initial default state for resetting
-    const initialCourseData = {
-        courseName: '',
-        startDate: '',
-        sessionsPerWeek: 2,
-        classDays: ['monday', 'wednesday'],
-        totalHours: 40,
-        hourType: 'pedagogical',
-        hoursPerSession: 2,
-        recoverySessionsCount: 0,
-        customExcludedDates: []
-    };
-
-    const [courseData, setCourseData] = useState(() => {
-        try {
-            const savedData = typeof window !== 'undefined' ? localStorage.getItem('courseData') : null;
-            return savedData ? JSON.parse(savedData) : initialCourseData;
-        } catch (e) {
-            return initialCourseData;
-        }
-    });
-
-    const [schedule, setSchedule] = useState([]);
-    const [darkMode, setDarkMode] = useState(false);
-    const [viewMode, setViewMode] = useState('list'); // 'list' | 'calendar'
+    // --- Extracted Hooks ---
+    const {
+        courseData,
+        handleInputChange,
+        handleDayToggle,
+        addExcludedDate,
+        removeExcludedDate,
+        resetCourse
+    } = useCourseData();
 
     const { holidays, holidayWarning } = useHolidays(courseData.startDate);
 
-    // --- Effects ---
-    // Persist data to localStorage whenever courseData changes
+    const schedule = useSchedule(courseData, holidays);
+
+    // --- Persistent UI Preferences ---
+    const [darkMode, setDarkMode] = useState(() => {
+        try {
+            const stored = localStorage.getItem('darkMode');
+            if (stored !== null) return stored === 'true';
+            return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+        } catch {
+            return false;
+        }
+    });
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('courseData', JSON.stringify(courseData));
-        }
-    }, [courseData]);
+        localStorage.setItem('darkMode', String(darkMode));
+    }, [darkMode]);
 
-    // --- Schedule Generation ---
+    const [viewMode, setViewMode] = useState(() => {
+        try {
+            return localStorage.getItem('viewMode') || 'list';
+        } catch {
+            return 'list';
+        }
+    });
     useEffect(() => {
-        setSchedule(calculateSchedule(courseData, holidays));
-    }, [courseData, holidays]);
-
-    // --- Handlers ---
-    
-    const handleInputChange = (field, value) => {
-        setCourseData((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const handleDayToggle = (day) => {
-        setCourseData((prev) => ({
-            ...prev,
-            classDays: prev.classDays.includes(day)
-                ? prev.classDays.filter((d) => d !== day)
-                : [...prev.classDays, day]
-        }));
-    };
-
-    const addExcludedDate = (date) => {
-        if (date && !courseData.customExcludedDates.includes(date)) {
-            handleInputChange('customExcludedDates', [...courseData.customExcludedDates, date]);
-        }
-    };
-
-    const removeExcludedDate = (dateToRemove) => {
-        handleInputChange('customExcludedDates', courseData.customExcludedDates.filter((d) => d !== dateToRemove));
-    };
-
-    /**
-     * Resets the application state to a blank slate
-     */
-    const resetCourse = () => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar toda la información actual? Esto no se puede deshacer.')) {
-            setCourseData(initialCourseData);
-            setSchedule([]);
-            localStorage.removeItem('courseData');
-        }
-    };
+        localStorage.setItem('viewMode', viewMode);
+    }, [viewMode]);
 
     const exportToExcel = () => {
         if (schedule.length === 0) return;
@@ -195,9 +157,9 @@ function App() {
                         >
                             {darkMode ? <Sun size={20} className="text-amber-400" /> : <Moon size={20} className="text-indigo-600" />}
                         </button>
-                        
-                        {/* New Reset Button */}
-                        <button 
+
+                        {/* Reset Button */}
+                        <button
                             onClick={resetCourse}
                             className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-rose-500 hover:text-rose-500 transition-all"
                             title="Eliminar todo / Reiniciar"
@@ -218,7 +180,7 @@ function App() {
 
                 <main className="grid lg:grid-cols-12 gap-8">
                     <aside className="lg:col-span-4 space-y-6 no-print">
-                        <CourseForm 
+                        <CourseForm
                             courseData={courseData}
                             onInputChange={handleInputChange}
                             onDayToggle={handleDayToggle}
@@ -256,7 +218,7 @@ function App() {
 
                                 {/* Schedule Container - Refactored into ScheduleList */}
                                 <section className={`bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col ${viewMode === 'list' ? 'h-[600px] print-h-auto' : ''}`}>
-                                    <ScheduleList 
+                                    <ScheduleList
                                         schedule={schedule}
                                         courseData={courseData}
                                         viewMode={viewMode}
