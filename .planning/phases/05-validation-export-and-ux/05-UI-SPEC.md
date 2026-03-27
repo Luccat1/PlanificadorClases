@@ -65,8 +65,8 @@ Source: codebase scan — extracted from Tailwind class usage across `App.jsx`, 
 | Label | 10px (`text-[10px]`) | 700 (bold) | 1.0 (single-line caps, tracking-widest) |
 
 New in Phase 5:
-- Inline validation error text: 12px (`text-xs`), weight 400, color `text-rose-500 dark:text-rose-400`, line-height 1.5. Appears on the line immediately below the offending field.
-- Export metadata block (print): inherits Body (14px, 400) for values; inherits Label (10px, 700, caps) for metadata keys.
+- Inline validation error text uses Body (14px, `text-sm`), weight 400, color `text-rose-500 dark:text-rose-400`, line-height 1.5. The rose color alone is sufficient to distinguish error text from normal body text. No new size is introduced.
+- Export metadata block (print): values inherit Body (14px, 400); metadata keys inherit Label (10px, 700, caps, tracking-wider) — rendered with `text-[10px] font-bold uppercase tracking-wider text-slate-500`.
 
 ---
 
@@ -96,7 +96,7 @@ Additional semantic colors (already established, continued in Phase 5):
 - `rose-*`: Destructive actions (reset hover, remove date hover), PDF button, validation error text
 
 New in Phase 5:
-- Validation error state: field border changes from `border-slate-200` to `border-rose-400 dark:border-rose-500`; error message text uses `text-rose-500 dark:text-rose-400`
+- Validation error state: field border changes from `border-slate-200` to `border-rose-400 dark:border-rose-500`; error message text uses `text-rose-500 dark:text-rose-400`.
 - Schedule suppressed state (invalid inputs): the schedule area shows the "not yet configured" empty state (dashed border, `BookOpen` icon) rather than a new error component — this reuses the existing empty-state affordance.
 
 ---
@@ -134,7 +134,7 @@ Validated fields and their error conditions:
 
 Visual treatment per invalid field:
 - Input border: `border-rose-400 dark:border-rose-500` (replaces default `border-slate-200 dark:border-slate-700`)
-- Error text: `<p className="text-xs text-rose-500 dark:text-rose-400 mt-1">{message}</p>` immediately below the field
+- Error text: `<p className="text-sm text-rose-500 dark:text-rose-400 mt-1">{message}</p>` immediately below the field — uses Body size (14px, `text-sm`); rose color distinguishes it from normal body text
 - Field label: unchanged (do not add asterisk or change label color)
 
 Schedule suppression: when any validation error is active, `useSchedule` returns an empty array (or the schedule area renders the existing empty state). No new "disabled button" needed — the reactive schedule already disappears when inputs are cleared.
@@ -144,7 +144,7 @@ Schedule suppression: when any validation error is active, `useSchedule` returns
 All new fields follow the existing pattern exactly:
 
 ```
-label: text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider
+label: text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider
 input: w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700
        bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all
 ```
@@ -178,10 +178,10 @@ Empty metadata fields: render as empty string (do not write "N/A" or "—").
 <div class="print-only hidden print:block mb-6 pb-4 border-b-2 border-slate-300">
   <h1 class="text-2xl font-bold">{courseName || "Cronograma de Clases"}</h1>
   <div class="grid grid-cols-2 gap-x-8 gap-y-1 mt-2 text-sm">
-    <div><span class="font-bold uppercase text-xs text-slate-500 tracking-wider">Semestre</span><p>{semester}</p></div>
-    <div><span class="font-bold uppercase text-xs text-slate-500 tracking-wider">Profesor/a</span><p>{professorName}</p></div>
-    <div><span class="font-bold uppercase text-xs text-slate-500 tracking-wider">Email</span><p>{contactEmail}</p></div>
-    <div><span class="font-bold uppercase text-xs text-slate-500 tracking-wider">Generado</span><p>{new Date().toLocaleDateString()}</p></div>
+    <div><span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Semestre</span><p>{semester}</p></div>
+    <div><span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Profesor/a</span><p>{professorName}</p></div>
+    <div><span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Email</span><p>{contactEmail}</p></div>
+    <div><span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Generado</span><p>{new Date().toLocaleDateString()}</p></div>
   </div>
 </div>
 ```
