@@ -6,7 +6,8 @@
       "Skill(gsd:new-project)",
       "Bash(node:*)",
       "Skill(gsd:plan-phase)",
-      "Skill(gsd:execute-phase)"
+      "Skill(gsd:execute-phase)",
+      "Skill(gsd:ui-phase)"
     ]
   }
 }

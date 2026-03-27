@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for PlanificadorClases/src/logic/constants.js</title>
+    <title>Code coverage report for PlanificadorClases/src/hooks/useSchedule.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">PlanificadorClases/src/logic</a> constants.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">PlanificadorClases/src/hooks</a> useSchedule.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/33</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>9/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>33/33</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
@@ -96,7 +96,26 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -107,61 +126,45 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const DAY_NAMES = {
-    monday: 'Lunes',
-    tuesday: 'Martes',
-    wednesday: 'Miércoles',
-    thursday: 'Jueves',
-    friday: 'Viernes',
-    saturday: 'Sábado',
-    sunday: 'Domingo'
-};
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMemo } from 'react';
+import { calculateSchedule } from '../logic/scheduleEngine';
 &nbsp;
-export const DAY_MAPPING = {
-    sunday: 0, monday: 1, tuesday: 2, wednesday: 3,
-    thursday: 4, friday: 5, saturday: 6
-};
+/**
+ * Returns false when courseData has fields that would produce a meaningless schedule.
+ * Duplicate of CourseForm's getError logic — intentional (D-04: no prop threading).
+ * @param {object} courseData
+ * @returns {boolean}
+ */
+function isFormValid(courseData) {
+    return (
+        courseData.totalHours &gt; 0 &amp;&amp;
+        courseData.hoursPerSession &gt; 0 &amp;&amp;
+        Boolean(courseData.startDate) &amp;&amp;
+        courseData.classDays.length &gt; 0 &amp;&amp;
+        (courseData.recoveryExtraMinutes <span class="branch-0 cbranch-no" title="branch not covered" >?? 0)</span> &gt;= 0
+    );
+}
 &nbsp;
-export const CHILEAN_HOLIDAYS_2026 = [
-    { date: '2026-01-01', name: 'Año Nuevo' },
-    { date: '2026-04-03', name: 'Viernes Santo' },
-    { date: '2026-04-04', name: 'Sábado Santo' },
-    { date: '2026-05-01', name: 'Día del Trabajador' },
-    { date: '2026-05-21', name: 'Día de las Glorias Navales' },
-    { date: '2026-06-29', name: 'San Pedro y San Pablo' },
-    { date: '2026-07-16', name: 'Día de la Virgen del Carmen' },
-    { date: '2026-08-15', name: 'Asunción de la Virgen' },
-    { date: '2026-09-18', name: 'Independencia Nacional' },
-    { date: '2026-09-19', name: 'Glorias del Ejército' },
-    { date: '2026-09-20', name: 'Feriado Puente Fiestas Patrias' },
-    { date: '2026-10-12', name: 'Día de la Raza' },
-    { date: '2026-10-31', name: 'Día de las Iglesias Evangélicas' },
-    { date: '2026-11-01', name: 'Día de Todos los Santos' },
-    { date: '2026-12-08', name: 'Inmaculada Concepción' },
-    { date: '2026-12-25', name: 'Navidad' }
-];
+/**
+ * Derives the schedule from courseData and holidays using useMemo.
+ * Returns [] immediately when form inputs are invalid (D-05).
+ * Extracted from App.jsx (Phase 3 — ARCH-03).
+ *
+ * @param {object} courseData  - Full course configuration object
+ * @param {Array}  holidays    - Array of { date: string, name: string }
+ * @returns {Array} schedule   - Array of session objects, or [] if inputs are invalid
+ */
+export function useSchedule(courseData, holidays) {
+    return useMemo(
+        () =&gt; isFormValid(courseData) ? calculateSchedule(courseData, holidays) : [],
+        [courseData, holidays]
+    );
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
