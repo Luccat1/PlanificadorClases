@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Algorithm Extraction** - Extract scheduling logic to a pure, testable module and wire sessionsPerWeek cap
 - [x] **Phase 2: Test Infrastructure** - Install Vitest + RTL + MSW and cover scheduling logic with unit and component tests (completed 2026-03-26)
-- [ ] **Phase 3: Hook Extraction and Persistence** - Extract state into custom hooks; add dark mode and view mode persistence
+- [x] **Phase 3: Hook Extraction and Persistence** - Extract state into custom hooks; add dark mode and view mode persistence
 - [x] **Phase 4: Holiday API Integration** - Replace hardcoded holiday array with live nager.date API fetch and localStorage cache (completed 2026-03-27)
 - [ ] **Phase 5: Validation, Export, and UX** - Add inline input validation, export metadata header, and configurable recovery minutes
 
@@ -102,6 +102,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Algorithm Extraction | 1/1 | Complete | 2026-03-26 |
 | 2. Test Infrastructure | 3/3 | Complete   | 2026-03-26 |
-| 3. Hook Extraction and Persistence | 2/3 | In Progress|  |
+| 3. Hook Extraction and Persistence | 3/3 | Complete | 2026-03-27 |
 | 4. Holiday API Integration | 3/3 | Complete | 2026-03-27 |
 | 5. Validation, Export, and UX | 0/TBD | Not started | - |
