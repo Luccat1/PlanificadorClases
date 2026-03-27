@@ -71,8 +71,11 @@ function App() {
 
         const workbook = XLSX.utils.book_new();
         const data = [
-            ['CRONOGRAMA DE CURSO: ' + (courseData.courseName || 'Sin Nombre')],
-            ['Fecha de Generación: ' + new Date().toLocaleDateString()],
+            ['CRONOGRAMA DE CURSO:', courseData.courseName || ''],
+            ['Semestre:', courseData.semester || ''],
+            ['Profesor/a:', courseData.professorName || ''],
+            ['Email:', courseData.contactEmail || ''],
+            ['Generado:', new Date().toLocaleDateString()],
             [],
             ['Sesión', 'Fecha', 'Día', 'Tipo', 'Horas Crono', 'Horas Curso', 'Acumuladas', 'Notas']
         ];
@@ -190,6 +193,36 @@ function App() {
                     </aside>
 
                     <div className="lg:col-span-8 flex flex-col gap-6">
+                        {/* Print-only metadata header — hidden on screen, visible in print/PDF (EXPO-03) */}
+                        <div className="hidden print:block mb-6 pb-4 border-b-2 border-slate-300">
+                            <h1 className="text-2xl font-bold">
+                                {courseData.courseName || 'Cronograma de Clases'}
+                            </h1>
+                            <div className="grid grid-cols-2 gap-x-8 gap-y-1 mt-2 text-sm">
+                                {courseData.semester && (
+                                    <div>
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Semestre</span>
+                                        <p>{courseData.semester}</p>
+                                    </div>
+                                )}
+                                {courseData.professorName && (
+                                    <div>
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Profesor/a</span>
+                                        <p>{courseData.professorName}</p>
+                                    </div>
+                                )}
+                                {courseData.contactEmail && (
+                                    <div>
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Email</span>
+                                        <p>{courseData.contactEmail}</p>
+                                    </div>
+                                )}
+                                <div>
+                                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Generado</span>
+                                    <p>{new Date().toLocaleDateString()}</p>
+                                </div>
+                            </div>
+                        </div>
                         {holidayWarning && (
                             <div className="flex items-center gap-2 px-4 py-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-2xl text-amber-700 dark:text-amber-400 text-sm no-print">
                                 <AlertCircle size={16} className="shrink-0" />
@@ -235,7 +268,8 @@ function App() {
                         <footer className="grid sm:grid-cols-2 gap-4 no-print">
                             <div className="p-4 bg-amber-50 dark:bg-amber-900/10 rounded-2xl border border-amber-100 dark:border-amber-900/30">
                                 <h4 className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm mb-1"><AlertCircle size={16} /> Recuperación Activa</h4>
-                                <p className="text-xs text-amber-700 dark:text-amber-500/80 leading-relaxed">Primeras <b>{courseData.recoverySessionsCount}</b> sesiones con 30 min extra para avance rápido.</p>
+                                <p className="text-xs text-amber-700 dark:text-amber-500/80 leading-relaxed">Primeras <b>{courseData.recoverySessionsCount}</b> sesiones con{' '}
+                                <b>{courseData.recoveryExtraMinutes ?? 30}</b> min extra para avance rápido.</p>
                             </div>
                             <div className="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700/50">
                                 <h4 className="flex items-center gap-2 text-slate-600 dark:text-slate-400 font-bold text-sm mb-1"><Calendar size={16} /> Feriados Nacionales</h4>
