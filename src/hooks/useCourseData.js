@@ -9,7 +9,11 @@ export const INITIAL_COURSE_DATA = {
     hourType: 'pedagogical',
     hoursPerSession: 2,
     recoverySessionsCount: 0,
-    customExcludedDates: []
+    customExcludedDates: [],
+    semester: '',
+    professorName: '',
+    contactEmail: '',
+    recoveryExtraMinutes: 30,
 };
 
 /**
@@ -32,7 +36,9 @@ export function useCourseData() {
             const saved = typeof window !== 'undefined'
                 ? localStorage.getItem('courseData')
                 : null;
-            return saved ? JSON.parse(saved) : INITIAL_COURSE_DATA;
+            return saved
+                ? { ...INITIAL_COURSE_DATA, ...JSON.parse(saved) }
+                : INITIAL_COURSE_DATA;
         } catch {
             return INITIAL_COURSE_DATA;
         }
