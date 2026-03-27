@@ -37,9 +37,13 @@ const initialCourseData = {
     hoursPerSession: 1,
     hourType: 'chronological',
     recoverySessionsCount: 0,
+    recoveryExtraMinutes: 30,   // NEW (05-02)
     sessionsPerWeek: 0,
     classDays: [],
     customExcludedDates: [],
+    semester: '',               // NEW (05-02)
+    professorName: '',          // NEW (05-02)
+    contactEmail: '',           // NEW (05-02)
 }
 
 describe('CourseForm (TEST-06)', () => {
@@ -60,11 +64,13 @@ describe('CourseForm (TEST-06)', () => {
     it('totalHours input: clearing and typing new value propagates to state', async () => {
         const user = userEvent.setup()
         render(<Wrapper initial={initialCourseData} />)
-        // Find the totalHours input by its current value
-        // DOM order: totalHours (col 1), hoursPerSession (col 1 of second grid), recoverySessionsCount (col 2)
-        const inputs = screen.getAllByRole('spinbutton')
-        // totalHours is the first number input rendered (grid col 2)
-        const totalHoursInput = inputs[0]
+        // Spinbutton order after Task 1 additions:
+        // inputs[0]: totalHours (aria-label="TOTAL HORAS")
+        // inputs[1]: hoursPerSession (aria-label="HRS / SESIÓN")
+        // inputs[2]: recoverySessionsCount
+        // inputs[3]: recoveryExtraMinutes (aria-label="MIN. EXTRA RECUPERACIÓN")
+        // Use aria-label for stable query (not index-dependent)
+        const totalHoursInput = screen.getByRole('spinbutton', { name: /TOTAL HORAS/i })
         await user.clear(totalHoursInput)
         await user.type(totalHoursInput, '10')
         expect(totalHoursInput).toHaveValue(10)
@@ -99,5 +105,83 @@ describe('CourseForm (TEST-06)', () => {
         await user.click(chronoButton)
         // After click, the button should reflect the active state (indigo styling)
         expect(chronoButton).toBeInTheDocument()
+    })
+})
+
+describe('CourseForm — new metadata fields (EXPO-01)', () => {
+    it('renders semester input', () => {
+        render(<Wrapper initial={initialCourseData} />)
+        expect(screen.getByPlaceholderText(/2do Semestre/i)).toBeInTheDocument()
+    })
+
+    it('renders professorName input', () => {
+        render(<Wrapper initial={initialCourseData} />)
+        expect(screen.getByPlaceholderText(/María González/i)).toBeInTheDocument()
+    })
+
+    it('renders contactEmail input', () => {
+        render(<Wrapper initial={initialCourseData} />)
+        expect(screen.getByPlaceholderText(/m\.gonzalez@/i)).toBeInTheDocument()
+    })
+
+    it('renders recoveryExtraMinutes input', () => {
+        render(<Wrapper initial={initialCourseData} />)
+        expect(screen.getByRole('spinbutton', { name: /MIN.*EXTRA/i })).toBeInTheDocument()
+    })
+
+    it('semester field propagates value via onInputChange', async () => {
+        const user = userEvent.setup()
+        render(<Wrapper initial={initialCourseData} />)
+        const input = screen.getByPlaceholderText(/2do Semestre/i)
+        await user.type(input, '1er Semestre 2026')
+        expect(input).toHaveValue('1er Semestre 2026')
+    })
+})
+
+describe('CourseForm — inline validation (CORT-01)', () => {
+    it('no validation errors visible on fresh form load (D-01)', () => {
+        render(<Wrapper initial={initialCourseData} />)
+        expect(screen.queryByText('Ingresa un valor mayor a 0')).not.toBeInTheDocument()
+        expect(screen.queryByText('Selecciona al menos un día de clase')).not.toBeInTheDocument()
+        expect(screen.queryByText('Selecciona una fecha de inicio')).not.toBeInTheDocument()
+        expect(screen.queryByText('Ingresa 0 o más minutos')).not.toBeInTheDocument()
+    })
+
+    it('totalHours: error appears after blur with value 0 (D-01)', async () => {
+        const user = userEvent.setup()
+        render(<Wrapper initial={{ ...initialCourseData, totalHours: 0 }} />)
+        const input = screen.getByRole('spinbutton', { name: /TOTAL HORAS/i })
+        await user.click(input)
+        await user.tab() // triggers blur
+        expect(screen.getByText('Ingresa un valor mayor a 0')).toBeInTheDocument()
+    })
+
+    it('totalHours: error clears eagerly when value becomes valid (D-02)', async () => {
+        const user = userEvent.setup()
+        render(<Wrapper initial={{ ...initialCourseData, totalHours: 0 }} />)
+        const input = screen.getByRole('spinbutton', { name: /TOTAL HORAS/i })
+        await user.click(input)
+        await user.tab()
+        expect(screen.getByText('Ingresa un valor mayor a 0')).toBeInTheDocument()
+        await user.clear(input)
+        await user.type(input, '5')
+        expect(screen.queryByText('Ingresa un valor mayor a 0')).not.toBeInTheDocument()
+    })
+
+    it('classDays: error appears after clicking last day button to deselect (D-01)', async () => {
+        const user = userEvent.setup()
+        render(<Wrapper initial={{ ...initialCourseData, classDays: ['monday'] }} />)
+        const lunButton = screen.getByRole('button', { name: /^Lun$/i })
+        await user.click(lunButton) // removes monday → classDays empty
+        expect(screen.getByText('Selecciona al menos un día de clase')).toBeInTheDocument()
+    })
+
+    it('hoursPerSession: error appears after blur with value 0 (D-01)', async () => {
+        const user = userEvent.setup()
+        render(<Wrapper initial={{ ...initialCourseData, hoursPerSession: 0 }} />)
+        const input = screen.getByRole('spinbutton', { name: /HRS.*SESIÓN/i })
+        await user.click(input)
+        await user.tab()
+        expect(screen.getByText('Ingresa un valor mayor a 0')).toBeInTheDocument()
     })
 })
