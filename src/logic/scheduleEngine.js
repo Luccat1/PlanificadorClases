@@ -65,7 +65,11 @@ export function calculateSchedule(courseData, holidays) {
     const targetDayNums = courseData.classDays.map(d => DAY_MAPPING[d]);
 
     const effNormal = getEffectiveHours(courseData.hoursPerSession, courseData.hourType);
-    const effRecovery = getEffectiveHours(courseData.hoursPerSession + 0.5, courseData.hourType);
+    const recoveryBonusHours = (courseData.recoveryExtraMinutes ?? 30) / 60;
+    const effRecovery = getEffectiveHours(
+        courseData.hoursPerSession + recoveryBonusHours,
+        courseData.hourType
+    );
 
     if (effNormal <= 0) return [];
 
@@ -117,7 +121,7 @@ export function calculateSchedule(courseData, holidays) {
                 isRecovery,
                 isMidCourse: isMid,
                 chronoHours: isRecovery
-                    ? courseData.hoursPerSession + 0.5
+                    ? courseData.hoursPerSession + recoveryBonusHours
                     : courseData.hoursPerSession,
                 effHours: currentEff,
                 accHours: accumulatedEff
