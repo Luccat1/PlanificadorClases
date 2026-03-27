@@ -11,7 +11,11 @@ const BASE_COURSE = {
     hourType: 'pedagogical',
     hoursPerSession: 2,
     recoverySessionsCount: 0,
-    customExcludedDates: []
+    recoveryExtraMinutes: 30,
+    customExcludedDates: [],
+    semester: '',
+    professorName: '',
+    contactEmail: '',
 };
 
 const EMPTY_COURSE = {
@@ -23,7 +27,28 @@ const EMPTY_COURSE = {
     hourType: 'pedagogical',
     hoursPerSession: 2,
     recoverySessionsCount: 0,
-    customExcludedDates: []
+    recoveryExtraMinutes: 30,
+    customExcludedDates: [],
+    semester: '',
+    professorName: '',
+    contactEmail: '',
+};
+
+// Valid base fixture — all fields required (per project convention in STATE.md)
+const validCourseData = {
+    startDate: '2026-03-02',
+    classDays: ['monday', 'wednesday'],
+    totalHours: 4,
+    hoursPerSession: 1,
+    hourType: 'chronological',
+    recoverySessionsCount: 0,
+    recoveryExtraMinutes: 30,
+    sessionsPerWeek: 0,
+    customExcludedDates: [],
+    courseName: '',
+    semester: '',
+    professorName: '',
+    contactEmail: '',
 };
 
 beforeEach(() => {
@@ -83,3 +108,35 @@ describe('useSchedule — reactivity', () => {
         expect(withHoliday.current[0]?.dateStr).not.toBe('2026-03-02');
     });
 });
+
+describe('useSchedule — schedule validity guard (CORT-01)', () => {
+    it('returns non-empty schedule when all fields are valid', () => {
+        const { result } = renderHook(() => useSchedule(validCourseData, []))
+        expect(result.current.length).toBeGreaterThan(0)
+    })
+
+    it('returns [] when totalHours is 0', () => {
+        const { result } = renderHook(() => useSchedule({ ...validCourseData, totalHours: 0 }, []))
+        expect(result.current).toEqual([])
+    })
+
+    it('returns [] when hoursPerSession is 0', () => {
+        const { result } = renderHook(() => useSchedule({ ...validCourseData, hoursPerSession: 0 }, []))
+        expect(result.current).toEqual([])
+    })
+
+    it('returns [] when startDate is empty', () => {
+        const { result } = renderHook(() => useSchedule({ ...validCourseData, startDate: '' }, []))
+        expect(result.current).toEqual([])
+    })
+
+    it('returns [] when classDays is empty', () => {
+        const { result } = renderHook(() => useSchedule({ ...validCourseData, classDays: [] }, []))
+        expect(result.current).toEqual([])
+    })
+
+    it('returns [] when recoveryExtraMinutes is negative', () => {
+        const { result } = renderHook(() => useSchedule({ ...validCourseData, recoveryExtraMinutes: -1 }, []))
+        expect(result.current).toEqual([])
+    })
+})
