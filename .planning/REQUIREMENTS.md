@@ -7,7 +7,7 @@
 
 ### Correctness
 
-- [ ] **CORT-01**: App validates form inputs inline (negative hours, zero session length, no class days selected, missing start date) and blocks schedule generation until inputs are valid — showing errors next to the offending field, not a global alert
+- [x] **CORT-01**: App validates form inputs inline (negative hours, zero session length, no class days selected, missing start date) and blocks schedule generation until inputs are valid — showing errors next to the offending field, not a global alert
 - [x] **CORT-02**: Holiday data is fetched from nager.date API per calendar year needed, cached in localStorage keyed by year (`holidays_CL_{year}`), with a non-blocking warning banner when API and cache both fail — schedule generation proceeds using only custom excluded dates
 - [x] **CORT-03**: `sessionsPerWeek` field enforces a hard cap on sessions scheduled per calendar week (Mon–Sun) in the algorithm — a `sessionsPerWeek: 2` with Mon/Wed/Fri class days skips the third qualifying day each week
 - [x] **CORT-04**: Professor can configure the extra minutes added per recovery session (replaces the hardcoded +30 min constant) — input stored in `courseData`, default value 30
@@ -20,8 +20,8 @@
 ### Export
 
 - [x] **EXPO-01**: CourseForm includes fields for semester, professor name, and contact email (in addition to existing course name field)
-- [ ] **EXPO-02**: Excel export includes a metadata header block (3–4 rows) at the top of the sheet showing course name, semester, professor name, and contact email before the session rows
-- [ ] **EXPO-03**: Print/PDF output includes a metadata header block showing course name, semester, professor name, and contact email above the schedule table
+- [x] **EXPO-02**: Excel export includes a metadata header block (3–4 rows) at the top of the sheet showing course name, semester, professor name, and contact email before the session rows
+- [x] **EXPO-03**: Print/PDF output includes a metadata header block showing course name, semester, professor name, and contact email above the schedule table
 
 ### Architecture
 
@@ -83,11 +83,11 @@
 | PERS-02 | Phase 3 | Complete |
 | ARCH-04 | Phase 4 | Complete |
 | CORT-02 | Phase 4 | Complete |
-| CORT-01 | Phase 5 | Pending |
+| CORT-01 | Phase 5 | Complete |
 | CORT-04 | Phase 5 | Complete |
 | EXPO-01 | Phase 5 | Complete |
-| EXPO-02 | Phase 5 | Pending |
-| EXPO-03 | Phase 5 | Pending |
+| EXPO-02 | Phase 5 | Complete |
+| EXPO-03 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 20 total

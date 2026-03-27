@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-27T20:53:36.280Z"
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-03-27T21:00:31.375Z"
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 13
-  completed_plans: 11
+  completed_plans: 12
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-03-26)
 ## Current Position
 
 Phase: 05 (validation-export-and-ux) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Plan: 2 of 3
 | Phase 03-hook-extraction-and-persistence P02 | 2 | 2 tasks | 2 files |
 | Phase 03-hook-extraction-and-persistence P03 | 15 | 1 tasks | 1 files |
 | Phase 05-validation-export-and-ux P01 | 12 | 2 tasks | 4 files |
+| Phase 05-validation-export-and-ux P03 | 5 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,9 @@ Recent decisions affecting current work:
 - [Phase 05-validation-export-and-ux]: D-12 fields added to INITIAL_COURSE_DATA: semester, professorName, contactEmail, recoveryExtraMinutes (default 30)
 - [Phase 05-validation-export-and-ux]: Merge initializer: { ...INITIAL_COURSE_DATA, ...JSON.parse(saved) } — backward-compatible with old localStorage blobs
 - [Phase 05-validation-export-and-ux]: recoveryBonusHours = (courseData.recoveryExtraMinutes ?? 30) / 60 — dynamic recovery bonus replaces hardcoded +0.5 in scheduleEngine
+- [Phase 05-validation-export-and-ux]: isFormValid internal to useSchedule module — D-04 no prop threading; each layer validates independently
+- [Phase 05-validation-export-and-ux]: Excel metadata: two-cell format ['CRONOGRAMA DE CURSO:', courseName] allows Excel column-A label formatting
+- [Phase 05-validation-export-and-ux]: Print metadata div uses hidden print:block (Tailwind) as first child of lg:col-span-8 — not inside aside no-print
 
 ### Pending Todos
 
@@ -105,6 +109,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T20:53:36.276Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-03-27T21:00:31.370Z
+Stopped at: Completed 05-03-PLAN.md
 Resume file: None
