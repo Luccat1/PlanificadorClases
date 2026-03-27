@@ -25,7 +25,10 @@ Accurate, trustworthy schedule generation that professors can hand to students o
 - ✓ Dark mode toggle — existing
 - ✓ List view and calendar grid view — existing
 - ✓ Custom date exclusions (ad-hoc holidays/events) — existing
-- ✓ Full test suite — Vitest 3 + RTL + MSW scaffold; 33 tests covering `getEffectiveHours`, `calculateSchedule` (session count, holiday skip, sessionsPerWeek cap, year-boundary, UTC-3 timezone), CourseForm (field propagation, day toggle), ScheduleList (row count, mid-course/recovery markers) — Validated in Phase 2: Test Infrastructure
+- ✓ Full test suite — Vitest 3 + RTL + MSW scaffold; 63 tests covering `getEffectiveHours`, `calculateSchedule`, `useCourseData` (13 cases), `useSchedule` (5 cases), CourseForm, ScheduleList — Validated in Phase 2: Test Infrastructure + Phase 3: Hook Extraction
+- ✓ Dark mode persistence — localStorage with `prefers-color-scheme` fallback on first visit — Validated in Phase 3: Hook Extraction and Persistence
+- ✓ View mode persistence — localStorage persistence of list/grid selection — Validated in Phase 3: Hook Extraction and Persistence
+- ✓ Refactor `App.jsx` — extracted into `useCourseData` and `useSchedule` hooks; App.jsx reduced to ~80-line orchestration shell — Validated in Phase 3: Hook Extraction and Persistence
 
 ### Active
 
@@ -35,9 +38,6 @@ Accurate, trustworthy schedule generation that professors can hand to students o
 - [ ] Holiday data via nager.date API — replace hardcoded `CHILEAN_HOLIDAYS_2026` with live API fetch (`nager.date/api/v3/publicholidays/{year}/CL`), caching fetched years to avoid redundant requests
 - [ ] Wire `sessionsPerWeek` into scheduling algorithm as a hard maximum sessions-per-week cap
 - [ ] Input validation — guard against negative hours, zero session length, and invalid date configurations with clear UI feedback
-- [ ] Dark mode persistence — remember user preference in localStorage and respect `prefers-color-scheme` on first visit
-- [ ] View mode persistence — remember list vs. calendar view selection across refreshes via localStorage
-- [ ] Refactor `App.jsx` — extract scheduling algorithm and state into dedicated hook/module; reduce the monolithic 360-line file
 - [ ] Flexible recovery session configuration — configurable extra minutes per session (not just fixed +30) and ability to add ad-hoc makeup days outside the normal class schedule
 - [ ] UI improvements — polish layout, improve form usability, better visual hierarchy
 - [ ] Export metadata header — include course name, semester, professor name, and contact email at the top of Excel and PDF exports
@@ -94,4 +94,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after Phase 2 completion*
+*Last updated: 2026-03-27 after Phase 3 completion*
