@@ -29,18 +29,18 @@ Accurate, trustworthy schedule generation that professors can hand to students o
 - ✓ Dark mode persistence — localStorage with `prefers-color-scheme` fallback on first visit — Validated in Phase 3: Hook Extraction and Persistence
 - ✓ View mode persistence — localStorage persistence of list/grid selection — Validated in Phase 3: Hook Extraction and Persistence
 - ✓ Refactor `App.jsx` — extracted into `useCourseData` and `useSchedule` hooks; App.jsx reduced to ~80-line orchestration shell — Validated in Phase 3: Hook Extraction and Persistence
+- ✓ Holiday data via nager.date API — replaced hardcoded holidays with live API fetch; caches fetched years in localStorage — Validated in Phase 4: Holiday API Integration
+- ✓ Input validation — inline touched+blur validation for 5 fields; `useSchedule` returns `[]` for invalid inputs — Validated in Phase 5: Validation, Export, and UX
+- ✓ Configurable recovery extra minutes — default 30, user-adjustable; replaces hardcoded +0.5h in engine — Validated in Phase 5: Validation, Export, and UX
+- ✓ Export metadata header — semester, professor name, contact email in Excel (7-row header) and print/PDF (conditional print-only div) — Validated in Phase 5: Validation, Export, and UX
+- ✓ New form metadata fields — Semestre, Nombre Profesor/a, Email de Contacto added to CourseForm — Validated in Phase 5: Validation, Export, and UX
 
 ### Active
 
 <!-- Current scope. Building toward these. -->
 
-- [ ] Full test suite — unit tests for `calculateSchedule()` and `getEffectiveHours()`, plus React component tests (form, schedule display, interactions)
-- [ ] Holiday data via nager.date API — replace hardcoded `CHILEAN_HOLIDAYS_2026` with live API fetch (`nager.date/api/v3/publicholidays/{year}/CL`), caching fetched years to avoid redundant requests
 - [ ] Wire `sessionsPerWeek` into scheduling algorithm as a hard maximum sessions-per-week cap
-- [ ] Input validation — guard against negative hours, zero session length, and invalid date configurations with clear UI feedback
-- [ ] Flexible recovery session configuration — configurable extra minutes per session (not just fixed +30) and ability to add ad-hoc makeup days outside the normal class schedule
 - [ ] UI improvements — polish layout, improve form usability, better visual hierarchy
-- [ ] Export metadata header — include course name, semester, professor name, and contact email at the top of Excel and PDF exports
 
 ### Out of Scope
 
