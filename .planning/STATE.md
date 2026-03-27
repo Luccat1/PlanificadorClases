@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 05-03-PLAN.md
-last_updated: "2026-03-27T21:00:31.375Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 05-02-PLAN.md — CourseForm new fields and inline validation
+last_updated: "2026-03-27T21:02:13.412Z"
 progress:
   total_phases: 5
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 13
-  completed_plans: 12
+  completed_plans: 13
 ---
 
 # Project State
@@ -58,6 +58,7 @@ Plan: 3 of 3
 | Phase 03-hook-extraction-and-persistence P03 | 15 | 1 tasks | 1 files |
 | Phase 05-validation-export-and-ux P01 | 12 | 2 tasks | 4 files |
 | Phase 05-validation-export-and-ux P03 | 5 | 2 tasks | 3 files |
+| Phase 05-validation-export-and-ux P02 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,9 @@ Recent decisions affecting current work:
 - [Phase 05-validation-export-and-ux]: isFormValid internal to useSchedule module — D-04 no prop threading; each layer validates independently
 - [Phase 05-validation-export-and-ux]: Excel metadata: two-cell format ['CRONOGRAMA DE CURSO:', courseName] allows Excel column-A label formatting
 - [Phase 05-validation-export-and-ux]: Print metadata div uses hidden print:block (Tailwind) as first child of lg:col-span-8 — not inside aside no-print
+- [Phase 05-validation-export-and-ux]: touched state as single useState({}) object — field keys set on blur/click, clean initial state guaranteed (D-01)
+- [Phase 05-validation-export-and-ux]: aria-label on TOTAL HORAS and HRS / SESION spinbuttons — enables stable test queries independent of spinbutton index
+- [Phase 05-validation-export-and-ux]: 2-col recovery grid expanded to 3-col for recoveryExtraMinutes alongside Ses.Recuperacion and Hrs/Sesion (D-07)
 
 ### Pending Todos
 
@@ -109,6 +113,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T21:00:31.370Z
-Stopped at: Completed 05-03-PLAN.md
+Last session: 2026-03-27T21:02:13.406Z
+Stopped at: Completed 05-02-PLAN.md — CourseForm new fields and inline validation
 Resume file: None

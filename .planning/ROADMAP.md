@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Test Infrastructure** - Install Vitest + RTL + MSW and cover scheduling logic with unit and component tests (completed 2026-03-26)
 - [x] **Phase 3: Hook Extraction and Persistence** - Extract state into custom hooks; add dark mode and view mode persistence
 - [x] **Phase 4: Holiday API Integration** - Replace hardcoded holiday array with live nager.date API fetch and localStorage cache (completed 2026-03-27)
-- [ ] **Phase 5: Validation, Export, and UX** - Add inline input validation, export metadata header, and configurable recovery minutes
+- [x] **Phase 5: Validation, Export, and UX** - Add inline input validation, export metadata header, and configurable recovery minutes (completed 2026-03-27)
 
 ## Phase Details
 
@@ -94,7 +94,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md — Extend INITIAL_COURSE_DATA (4 new fields), fix recoveryExtraMinutes engine, extend calculateSchedule tests (CORT-04, EXPO-01 data)
-- [ ] 05-02-PLAN.md — Add new form fields and inline validation to CourseForm, extend CourseForm tests (CORT-01, EXPO-01 UI)
+- [x] 05-02-PLAN.md — Add new form fields and inline validation to CourseForm, extend CourseForm tests (CORT-01, EXPO-01 UI)
 - [x] 05-03-PLAN.md — Add schedule validity guard to useSchedule, update App.jsx Excel/print exports and footer copy (CORT-01 guard, EXPO-02, EXPO-03)
 
 ## Progress
@@ -108,4 +108,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Test Infrastructure | 3/3 | Complete   | 2026-03-26 |
 | 3. Hook Extraction and Persistence | 3/3 | Complete | 2026-03-27 |
 | 4. Holiday API Integration | 3/3 | Complete | 2026-03-27 |
-| 5. Validation, Export, and UX | 2/3 | In Progress|  |
+| 5. Validation, Export, and UX | 3/3 | Complete   | 2026-03-27 |
