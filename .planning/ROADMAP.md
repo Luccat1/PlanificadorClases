@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Algorithm Extraction** - Extract scheduling logic to a pure, testable module and wire sessionsPerWeek cap
 - [x] **Phase 2: Test Infrastructure** - Install Vitest + RTL + MSW and cover scheduling logic with unit and component tests (completed 2026-03-26)
 - [ ] **Phase 3: Hook Extraction and Persistence** - Extract state into custom hooks; add dark mode and view mode persistence
-- [ ] **Phase 4: Holiday API Integration** - Replace hardcoded holiday array with live nager.date API fetch and localStorage cache
+- [x] **Phase 4: Holiday API Integration** - Replace hardcoded holiday array with live nager.date API fetch and localStorage cache (completed 2026-03-27)
 - [ ] **Phase 5: Validation, Export, and UX** - Add inline input validation, export metadata header, and configurable recovery minutes
 
 ## Phase Details
@@ -76,9 +76,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Create MSW handlers + fetchHolidaysForYear service with cache logic and unit tests (ARCH-04)
-- [ ] 04-02-PLAN.md — Create useHolidays hook with multi-year fetch, merge, and graceful degradation + hook tests (ARCH-04, CORT-02)
-- [ ] 04-03-PLAN.md — Wire useHolidays into App.jsx, update getHolidayName signature, add warning banner, human verify (ARCH-04, CORT-02)
+- [x] 04-01-PLAN.md — Create MSW handlers + fetchHolidaysForYear service with cache logic and unit tests (ARCH-04)
+- [x] 04-02-PLAN.md — Create useHolidays hook with multi-year fetch, merge, and graceful degradation + hook tests (ARCH-04, CORT-02)
+- [x] 04-03-PLAN.md — Wire useHolidays into App.jsx, update getHolidayName signature, add warning banner, human verify (ARCH-04, CORT-02)
 
 ### Phase 5: Validation, Export, and UX
 **Goal**: Invalid inputs are blocked at the form level with inline error messages; exports carry a professor-facing metadata header; recovery session extra minutes are configurable
@@ -103,5 +103,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Algorithm Extraction | 1/1 | Complete | 2026-03-26 |
 | 2. Test Infrastructure | 3/3 | Complete   | 2026-03-26 |
 | 3. Hook Extraction and Persistence | 0/TBD | Not started | - |
-| 4. Holiday API Integration | 0/3 | Not started | - |
+| 4. Holiday API Integration | 3/3 | Complete | 2026-03-27 |
 | 5. Validation, Export, and UX | 0/TBD | Not started | - |

@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Executing Phase 04
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-03-26T20:50:08.554Z"
+status: Phase 04 verified and complete — ready to plan Phase 05
+stopped_at: Phase 04 human verification passed
+last_updated: "2026-03-27T14:30:00.000Z"
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 4
   total_plans: 7
-  completed_plans: 4
+  completed_plans: 6
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-26)
 
 **Core value:** Accurate, trustworthy schedule generation that professors can hand to students on day one.
-**Current focus:** Phase 04 — Holiday API Integration
+**Current focus:** Phase 04 — holiday-api-integration
 
 ## Current Position
 
-Phase: 04 (Holiday API Integration) — EXECUTING
-Plan: 1 of 3
+Phase: 05 (validation-export-ux) — READY TO PLAN
+Plan: 0 of TBD
 
 ## Performance Metrics
 
@@ -50,6 +50,9 @@ Plan: 1 of 3
 | Phase 02 P01 | 5 | 2 tasks | 5 files |
 | Phase 02-test-infrastructure P03 | 15 | 2 tasks | 2 files |
 | Phase 02 P02 | 4 | 2 tasks | 2 files |
+| Phase 04-holiday-api-integration P01 | 3 | 2 tasks | 3 files |
+| Phase 04-holiday-api-integration P02 | 95 | 2 tasks | 2 files |
+| Phase 04-holiday-api-integration P03 | 3 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -70,6 +73,12 @@ Recent decisions affecting current work:
 - [Phase 02-test-infrastructure]: makeSession uses local Date constructor (not ISO string) to avoid UTC offset in jsdom
 - [Phase 02]: Use toBeCloseTo for floating-point hour multiplier assertions (pedagogical 60/45, dgai 60/35)
 - [Phase 02]: All courseData test fixtures include all 8 required fields to prevent unexpected engine behavior
+- [Phase 04-holiday-api-integration]: localName (Spanish) used for holiday name field, not English name — confirmed via nager.date API response shape
+- [Phase 04-holiday-api-integration]: global:false regional holidays filtered out at service layer nationally (Arica-only entries excluded)
+- [Phase 04-02]: Hook accepts only startDate (not endDate) to avoid circular dependency with computed endDate
+- [Phase 04-02]: Always fetch startYear AND startYear+1 to cover multi-year courses without needing endDate
+- [Phase 04-holiday-api-integration]: useHolidays always fetches startYear and startYear+1 to cover multi-year courses without endDate circular dependency
+- [Phase 04-holiday-api-integration]: getHolidayName signature changed to (dateStr, holidays = []) — default [] maintains backward compatibility
 
 ### Pending Todos
 
@@ -83,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T20:17:07.262Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-03-27T14:30:00.000Z
+Stopped at: Phase 04 complete — ready to plan Phase 05
 Resume file: None

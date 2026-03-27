@@ -8,7 +8,7 @@
 ### Correctness
 
 - [ ] **CORT-01**: App validates form inputs inline (negative hours, zero session length, no class days selected, missing start date) and blocks schedule generation until inputs are valid — showing errors next to the offending field, not a global alert
-- [ ] **CORT-02**: Holiday data is fetched from nager.date API per calendar year needed, cached in localStorage keyed by year (`holidays_CL_{year}`), with a non-blocking warning banner when API and cache both fail — schedule generation proceeds using only custom excluded dates
+- [x] **CORT-02**: Holiday data is fetched from nager.date API per calendar year needed, cached in localStorage keyed by year (`holidays_CL_{year}`), with a non-blocking warning banner when API and cache both fail — schedule generation proceeds using only custom excluded dates
 - [x] **CORT-03**: `sessionsPerWeek` field enforces a hard cap on sessions scheduled per calendar week (Mon–Sun) in the algorithm — a `sessionsPerWeek: 2` with Mon/Wed/Fri class days skips the third qualifying day each week
 - [ ] **CORT-04**: Professor can configure the extra minutes added per recovery session (replaces the hardcoded +30 min constant) — input stored in `courseData`, default value 30
 
@@ -28,7 +28,7 @@
 - [x] **ARCH-01**: Scheduling logic extracted to `src/logic/scheduleEngine.js` as pure functions (`calculateSchedule`, `getEffectiveHours`, `isDateExcluded`) with no React dependencies — takes all inputs as parameters, returns value
 - [ ] **ARCH-02**: Course data state and localStorage persistence extracted to `src/hooks/useCourseData.js` custom hook
 - [ ] **ARCH-03**: Schedule calculation state extracted to `src/hooks/useSchedule.js` custom hook that consumes `scheduleEngine.js`
-- [ ] **ARCH-04**: Holiday API fetch and cache logic extracted to `src/services/holidayApi.js` (pure async function) wrapped by `src/hooks/useHolidays.js` hook with year-keyed localStorage caching and fallback
+- [x] **ARCH-04**: Holiday API fetch and cache logic extracted to `src/services/holidayApi.js` (pure async function) wrapped by `src/hooks/useHolidays.js` hook with year-keyed localStorage caching and fallback
 
 ### Testing
 
@@ -81,8 +81,8 @@
 | ARCH-03 | Phase 3 | Pending |
 | PERS-01 | Phase 3 | Pending |
 | PERS-02 | Phase 3 | Pending |
-| ARCH-04 | Phase 4 | Pending |
-| CORT-02 | Phase 4 | Pending |
+| ARCH-04 | Phase 4 | Complete |
+| CORT-02 | Phase 4 | Complete |
 | CORT-01 | Phase 5 | Pending |
 | CORT-04 | Phase 5 | Pending |
 | EXPO-01 | Phase 5 | Pending |
