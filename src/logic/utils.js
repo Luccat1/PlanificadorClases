@@ -1,5 +1,3 @@
-import { CHILEAN_HOLIDAYS_2026 } from './constants';
-
 /**
  * @param {number} chronologicalHours
  * @param {string} hourType
@@ -28,9 +26,10 @@ export const formatDateLong = (dateStr) => {
 };
 
 /**
- * @param {string} dateStr
+ * @param {string} dateStr  'YYYY-MM-DD'
+ * @param {Array<{date: string, name: string}>} holidays  Live holidays array from useHolidays
  */
-export const getHolidayName = (dateStr) => {
-    const holiday = CHILEAN_HOLIDAYS_2026.find(h => h.date === dateStr);
+export const getHolidayName = (dateStr, holidays = []) => {
+    const holiday = holidays.find(h => h.date === dateStr);
     return holiday ? holiday.name : null;
 };
