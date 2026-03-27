@@ -17,7 +17,8 @@ import {
 import * as XLSX from 'xlsx';
 
 // Modular Imports
-import { DAY_NAMES, DAY_MAPPING, CHILEAN_HOLIDAYS_2026 } from './logic/constants';
+import { DAY_NAMES, DAY_MAPPING } from './logic/constants';
+import { useHolidays } from './hooks/useHolidays.js';
 import { getEffectiveHours, formatDateLong, getHolidayName } from './logic/utils';
 import { calculateSchedule } from './logic/scheduleEngine';
 import CalendarGrid from './components/CalendarGrid';
@@ -52,6 +53,8 @@ function App() {
     const [darkMode, setDarkMode] = useState(false);
     const [viewMode, setViewMode] = useState('list'); // 'list' | 'calendar'
 
+    const { holidays, holidayWarning } = useHolidays(courseData.startDate);
+
     // --- Effects ---
     // Persist data to localStorage whenever courseData changes
     useEffect(() => {
@@ -62,8 +65,8 @@ function App() {
 
     // --- Schedule Generation ---
     useEffect(() => {
-        setSchedule(calculateSchedule(courseData, CHILEAN_HOLIDAYS_2026));
-    }, [courseData]);
+        setSchedule(calculateSchedule(courseData, holidays));
+    }, [courseData, holidays]);
 
     // --- Handlers ---
     
@@ -113,7 +116,7 @@ function App() {
         ];
 
         schedule.forEach((s) => {
-            const holiday = getHolidayName(s.dateStr);
+            const holiday = getHolidayName(s.dateStr, holidays);
             let notes = [];
             if (holiday) notes.push('Feriado: ' + holiday);
             if (s.isMidCourse) notes.push('MITAD DEL CURSO');
@@ -225,6 +228,12 @@ function App() {
                     </aside>
 
                     <div className="lg:col-span-8 flex flex-col gap-6">
+                        {holidayWarning && (
+                            <div className="flex items-center gap-2 px-4 py-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-2xl text-amber-700 dark:text-amber-400 text-sm no-print">
+                                <AlertCircle size={16} className="shrink-0" />
+                                <span>{holidayWarning}</span>
+                            </div>
+                        )}
                         {schedule.length > 0 ? (
                             <>
                                 <section className="grid sm:grid-cols-3 gap-4">
@@ -268,7 +277,7 @@ function App() {
                             </div>
                             <div className="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700/50">
                                 <h4 className="flex items-center gap-2 text-slate-600 dark:text-slate-400 font-bold text-sm mb-1"><Calendar size={16} /> Feriados Nacionales</h4>
-                                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Detección automática de feriados chilenos 2026 para una planificación real.</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Feriados nacionales obtenidos en tiempo real desde nager.date para una planificación precisa.</p>
                             </div>
                         </footer>
                     </div>
