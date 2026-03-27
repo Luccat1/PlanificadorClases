@@ -14,8 +14,8 @@
 
 ### Persistence
 
-- [ ] **PERS-01**: Dark mode preference is persisted in localStorage and survives page refresh — on first visit defaults to `prefers-color-scheme` system preference
-- [ ] **PERS-02**: View mode selection (list / calendar grid) is persisted in localStorage and survives page refresh — default is `'list'`
+- [x] **PERS-01**: Dark mode preference is persisted in localStorage and survives page refresh — on first visit defaults to `prefers-color-scheme` system preference
+- [x] **PERS-02**: View mode selection (list / calendar grid) is persisted in localStorage and survives page refresh — default is `'list'`
 
 ### Export
 
@@ -26,8 +26,8 @@
 ### Architecture
 
 - [x] **ARCH-01**: Scheduling logic extracted to `src/logic/scheduleEngine.js` as pure functions (`calculateSchedule`, `getEffectiveHours`, `isDateExcluded`) with no React dependencies — takes all inputs as parameters, returns value
-- [ ] **ARCH-02**: Course data state and localStorage persistence extracted to `src/hooks/useCourseData.js` custom hook
-- [ ] **ARCH-03**: Schedule calculation state extracted to `src/hooks/useSchedule.js` custom hook that consumes `scheduleEngine.js`
+- [x] **ARCH-02**: Course data state and localStorage persistence extracted to `src/hooks/useCourseData.js` custom hook
+- [x] **ARCH-03**: Schedule calculation state extracted to `src/hooks/useSchedule.js` custom hook that consumes `scheduleEngine.js`
 - [x] **ARCH-04**: Holiday API fetch and cache logic extracted to `src/services/holidayApi.js` (pure async function) wrapped by `src/hooks/useHolidays.js` hook with year-keyed localStorage caching and fallback
 
 ### Testing
@@ -77,10 +77,10 @@
 | TEST-05 | Phase 2 | Complete |
 | TEST-06 | Phase 2 | Complete |
 | TEST-07 | Phase 2 | Complete |
-| ARCH-02 | Phase 3 | Pending |
-| ARCH-03 | Phase 3 | Pending |
-| PERS-01 | Phase 3 | Pending |
-| PERS-02 | Phase 3 | Pending |
+| ARCH-02 | Phase 3 | Complete |
+| ARCH-03 | Phase 3 | Complete |
+| PERS-01 | Phase 3 | Complete |
+| PERS-02 | Phase 3 | Complete |
 | ARCH-04 | Phase 4 | Complete |
 | CORT-02 | Phase 4 | Complete |
 | CORT-01 | Phase 5 | Pending |
