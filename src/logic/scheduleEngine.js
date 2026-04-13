@@ -74,6 +74,7 @@ export function calculateSchedule(courseData, holidays) {
     const current = new Date(startObj);
     let sessionCount = 0;
     let accumulatedEff = 0;
+    let accumulatedChrono = 0;
     let midCourseFound = false;
     let safetyCounter = 0;
 
@@ -107,8 +108,10 @@ export function calculateSchedule(courseData, holidays) {
             sessionCount++;
             const isRecovery = sessionCount <= courseData.recoverySessionsCount;
             const currentEff = isRecovery ? effDayRecovery : effDay;
+            const currentChrono = isRecovery ? baseHours + recoveryBonusHours : baseHours;
             const prevEff = accumulatedEff;
             accumulatedEff += currentEff;
+            accumulatedChrono += currentChrono;
 
             const isMid =
                 !midCourseFound &&
@@ -123,9 +126,10 @@ export function calculateSchedule(courseData, holidays) {
                 dayName: DAY_NAMES[dayKey],
                 isRecovery,
                 isMidCourse: isMid,
-                chronoHours: isRecovery ? baseHours + recoveryBonusHours : baseHours,
+                chronoHours: currentChrono,
                 effHours: currentEff,
-                accHours: accumulatedEff
+                accHours: accumulatedEff,
+                accChronoHours: accumulatedChrono
             });
         }
 

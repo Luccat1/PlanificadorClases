@@ -69,7 +69,8 @@ function ScheduleList({ schedule, courseData, viewMode }) {
                                         <div className="w-24 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
                                             <div className="bg-indigo-500 h-full rounded-full transition-all duration-500" style={{ width: `${(session.accHours / courseData.totalHours) * 100}%` }}></div>
                                         </div>
-                                        <div className="text-[10px] font-bold text-slate-400">{session.accHours.toFixed(1)} hrs</div>
+                                        <div className="text-[10px] font-bold text-slate-400">{session.accHours.toFixed(1)} <span className="font-normal">ped.</span></div>
+                                        <div className="text-[10px] text-slate-300 dark:text-slate-600">{(session.accChronoHours ?? 0).toFixed(1)} <span className="font-normal">crono</span></div>
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex flex-col items-end gap-1">
