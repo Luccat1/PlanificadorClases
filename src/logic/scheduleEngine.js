@@ -66,10 +66,6 @@ export function calculateSchedule(courseData, holidays) {
 
     const effNormal = getEffectiveHours(courseData.hoursPerSession, courseData.hourType);
     const recoveryBonusHours = (courseData.recoveryExtraMinutes ?? 30) / 60;
-    const effRecovery = getEffectiveHours(
-        courseData.hoursPerSession + recoveryBonusHours,
-        courseData.hourType
-    );
 
     if (effNormal <= 0) return [];
 
