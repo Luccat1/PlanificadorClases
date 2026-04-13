@@ -27,8 +27,8 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 **Goal:** Expose sessionsPerWeek control in UI (default 0 = no cap), redesign recovery section as "Sesiones con Tiempo Extra", add per-day variable class duration, add form section headers, migrate SheetJS to npm.
 
 **Plans:**
-- [ ] 06-01-PLAN.md — Data model + engine: sessionsPerWeek default 0, perDayHours map support
-- [ ] 06-02-PLAN.md — SheetJS CDN to npm migration
+- [x] 06-01-PLAN.md — Data model + engine: sessionsPerWeek default 0, perDayHours map support
+- [x] 06-02-PLAN.md — SheetJS CDN to npm migration
 - [ ] 06-03-PLAN.md — CourseForm UI overhaul: section headers, sessionsPerWeek field, recovery rename, per-day toggle
 - [ ] 06-04-PLAN.md — Schedule output: +Xmin badge on recovery rows, App.jsx footer card rename
 
@@ -41,4 +41,4 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 | 3. Hook Extraction and Persistence | v1.0 | 3/3 | Complete | 2026-03-27 |
 | 4. Holiday API Integration | v1.0 | 3/3 | Complete | 2026-03-27 |
 | 5. Validation, Export, and UX | v1.0 | 3/3 | Complete | 2026-03-27 |
-| 6. sessionsPerWeek + UI Polish | v1.1 | 0/4 | In Progress | — |
+| 6. sessionsPerWeek + UI Polish | v1.1 | 2/4 | In Progress|  |
