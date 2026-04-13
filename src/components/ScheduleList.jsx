@@ -59,6 +59,11 @@ function ScheduleList({ schedule, courseData, viewMode }) {
                                         {courseData.hourType !== 'chronological' && (
                                             <div className="text-[10px] font-bold text-indigo-500 uppercase">{session.effHours.toFixed(2)}h {courseData.hourType}</div>
                                         )}
+                                        {session.isRecovery && courseData.recoveryExtraMinutes > 0 && (
+                                            <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-[9px] font-bold rounded-md mt-1">
+                                                +{courseData.recoveryExtraMinutes}min
+                                            </span>
+                                        )}
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="w-24 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
