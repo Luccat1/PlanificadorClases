@@ -15,6 +15,8 @@
 | Funcionalidad | Detalle |
 |---|---|
 | **Tipos de hora** | Pedagógica (45 min), Cronológica (60 min), DGAI (35 min) |
+| **Control de Sesiones** | Validación en tiempo real del límite semanal de sesiones y horas acumuladas |
+| **Control de Sesiones** | Validación en tiempo real del límite semanal de sesiones y horas acumuladas |
 | **Cálculo automático** | Genera el cronograma completo a partir de fecha de inicio, días de clase y total de horas |
 | **Sesiones de recuperación** | Sesiones especiales con minutos extra configurables al inicio del curso |
 | **Feriados en tiempo real** | Integración con [Nager.Date API](https://date.nager.at/) + caché local (`localStorage`) |
@@ -137,14 +139,15 @@ npm test -- --run
 ## 📋 Roadmap
 
 - [x] **v1.0** — MVP completo (Fases 1–5), shipped 2026-03-27
-  - Extracción del motor de cálculo
-  - Infraestructura de tests
-  - Hooks y persistencia
-  - Integración API de feriados
-  - Validación, exportación y UX
-- [ ] **v1.1** — Mejoras planificadas
-  - Enforcement de `sessionsPerWeek` en UI
-  - Polish adicional de interfaz
+  - Extracción del motor de cálculo y API de feriados
+  - Validación, exportación y UX base
+- [x] **v1.1** — Mejoras UI/Formulario (Fase 6)
+  - Formularios de 5 secciones temáticas
+  - Control de máximos semanales (`sessionsPerWeek`)
+  - Acumuladores combinados de tipos de horas en tiempo real
+- [ ] **v1.2** — Funcionalidades de Integración
+  - Integración de exportación a Google Calendar o `.ics`
+  - Despliegue automático con GitHub Actions
 
 ---
 

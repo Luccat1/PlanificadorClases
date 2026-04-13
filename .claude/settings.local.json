@@ -7,7 +7,9 @@
       "Bash(node:*)",
       "Skill(gsd:plan-phase)",
       "Skill(gsd:execute-phase)",
-      "Skill(gsd:ui-phase)"
+      "Skill(gsd:ui-phase)",
+      "Skill(gsd:resume-work)",
+      "Bash(npx vitest:*)"
     ]
   }
 }

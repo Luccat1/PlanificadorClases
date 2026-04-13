@@ -79,8 +79,8 @@ src/
 
 ## 📋 Próximos Pasos
 
-- Añadir enforcement de `sessionsPerWeek` en la UI.
-- Polish adicional de interfaz (animaciones, transiciones).
+- Implementación de exportación nativa a `.ics` o Google Calendar.
+- Considerar el despliegue automático con cada merge a `main` mediante GitHub Actions.
 - Considerar migración a TypeScript para tipos más robustos.
 
 ---
