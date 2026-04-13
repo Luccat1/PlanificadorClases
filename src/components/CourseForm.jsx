@@ -22,6 +22,7 @@ function CourseForm({
 }) {
     const [newExcludedDate, setNewExcludedDate] = useState('');
     const [touched, setTouched] = useState({});
+    const [perDayEnabled, setPerDayEnabled] = useState(false);
 
     const markTouched = (field) =>
         setTouched(prev => ({ ...prev, [field]: true }));
@@ -64,7 +65,16 @@ function CourseForm({
             </h2>
 
             <div className="space-y-5">
-                {/* Course Name */}
+
+                {/* Section: INFORMACIÓN DEL CURSO */}
+                <div className="pt-5 pb-1">
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                        INFORMACIÓN DEL CURSO
+                    </p>
+                    <hr className="border-t border-slate-200 dark:border-slate-700" />
+                </div>
+
+                {/* Nombre del Curso */}
                 <div className="space-y-2">
                     <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nombre del Curso</label>
                     <input
@@ -118,7 +128,15 @@ function CourseForm({
                     />
                 </div>
 
-                {/* Date and Total Hours */}
+                {/* Section: CONFIGURACIÓN DE HORARIO */}
+                <div className="pt-5 pb-1">
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                        CONFIGURACIÓN DE HORARIO
+                    </p>
+                    <hr className="border-t border-slate-200 dark:border-slate-700" />
+                </div>
+
+                {/* Fecha Inicio + Total Horas */}
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fecha Inicio</label>
@@ -161,7 +179,7 @@ function CourseForm({
                     </div>
                 </div>
 
-                {/* Hour Type Selection */}
+                {/* Tipo de Medición */}
                 <div className="space-y-2">
                     <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tipo de Medición</label>
                     <div className="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
@@ -180,65 +198,83 @@ function CourseForm({
                     </div>
                 </div>
 
-                {/* Hours per Session, Recovery Sessions, and Recovery Extra Minutes */}
-                <div className="grid grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Hrs / Sesión</label>
-                        <input
-                            type="number"
-                            step="0.1"
-                            aria-label="HRS / SESIÓN"
-                            value={courseData.hoursPerSession}
-                            onChange={(e) => onInputChange('hoursPerSession', parseFloat(e.target.value) || 0)}
-                            onBlur={() => markTouched('hoursPerSession')}
-                            className={`w-full px-4 py-3 rounded-xl border ${
-                                getError('hoursPerSession')
-                                    ? 'border-rose-400 dark:border-rose-500'
-                                    : 'border-slate-200 dark:border-slate-700'
-                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all`}
-                        />
-                        {getError('hoursPerSession') && (
-                            <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">
-                                {getError('hoursPerSession')}
-                            </p>
-                        )}
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ses. Recuperación</label>
-                        <input
-                            type="number"
-                            value={courseData.recoverySessionsCount}
-                            onChange={(e) => onInputChange('recoverySessionsCount', parseInt(e.target.value) || 0)}
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-                        />
-                    </div>
-                    {/* Min. Extra Recuperación — third cell in the recovery grid */}
-                    <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                            MIN. EXTRA RECUPERACIÓN
-                        </label>
-                        <input
-                            type="number"
-                            min="0"
-                            aria-label="MIN. EXTRA RECUPERACIÓN"
-                            value={courseData.recoveryExtraMinutes}
-                            onChange={(e) => onInputChange('recoveryExtraMinutes', parseInt(e.target.value) || 0)}
-                            onBlur={() => markTouched('recoveryExtraMinutes')}
-                            className={`w-full px-4 py-3 rounded-xl border ${
-                                getError('recoveryExtraMinutes')
-                                    ? 'border-rose-400 dark:border-rose-500'
-                                    : 'border-slate-200 dark:border-slate-700'
-                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all`}
-                        />
-                        {getError('recoveryExtraMinutes') && (
-                            <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">
-                                {getError('recoveryExtraMinutes')}
-                            </p>
-                        )}
-                    </div>
+                {/* Hrs / Sesión */}
+                <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Hrs / Sesión</label>
+                    <input
+                        type="number"
+                        step="0.1"
+                        aria-label="HRS / SESIÓN"
+                        value={courseData.hoursPerSession}
+                        onChange={(e) => onInputChange('hoursPerSession', parseFloat(e.target.value) || 0)}
+                        onBlur={() => markTouched('hoursPerSession')}
+                        className={`w-full px-4 py-3 rounded-xl border ${
+                            getError('hoursPerSession')
+                                ? 'border-rose-400 dark:border-rose-500'
+                                : 'border-slate-200 dark:border-slate-700'
+                        } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all`}
+                    />
+                    {getError('hoursPerSession') && (
+                        <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">{getError('hoursPerSession')}</p>
+                    )}
                 </div>
 
-                {/* Class Days */}
+                {/* Per-day variable duration toggle (D-10) */}
+                <div className="space-y-3">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={perDayEnabled}
+                            onChange={(e) => {
+                                const on = e.target.checked;
+                                setPerDayEnabled(on);
+                                if (!on) {
+                                    onInputChange('perDayHours', {});
+                                }
+                            }}
+                            className="w-4 h-4 rounded accent-indigo-500"
+                        />
+                        <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Duración Variable por Día
+                        </span>
+                    </label>
+                    {perDayEnabled && courseData.classDays.length > 0 && (
+                        <div className="grid grid-cols-3 gap-3">
+                            {courseData.classDays.map((day) => (
+                                <div key={day} className="space-y-1">
+                                    <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        {DAY_NAMES[day].substring(0, 3).toUpperCase()}. HRS
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="0.5"
+                                        min="0.5"
+                                        aria-label={`HRS ${DAY_NAMES[day].substring(0, 3).toUpperCase()}`}
+                                        value={courseData.perDayHours?.[day] ?? courseData.hoursPerSession}
+                                        onChange={(e) => {
+                                            const val = parseFloat(e.target.value) || courseData.hoursPerSession;
+                                            onInputChange('perDayHours', {
+                                                ...courseData.perDayHours,
+                                                [day]: val
+                                            });
+                                        }}
+                                        className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-sm"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Section: DÍAS Y FRECUENCIA */}
+                <div className="pt-5 pb-1">
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                        DÍAS Y FRECUENCIA
+                    </p>
+                    <hr className="border-t border-slate-200 dark:border-slate-700" />
+                </div>
+
+                {/* Días de Clase */}
                 <div className="space-y-2">
                     <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Días de Clase</label>
                     <div className="grid grid-cols-4 gap-2">
@@ -262,9 +298,96 @@ function CourseForm({
                     )}
                 </div>
 
-                {/* Excluded Dates Management */}
-                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Fechas Excluidas</h3>
+                {/* Ses. Máx. por Semana (D-01, D-03, D-04) */}
+                <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        Ses. Máx. por Semana
+                    </label>
+                    <input
+                        type="number"
+                        min="0"
+                        aria-label="SES. MÁX. POR SEMANA"
+                        value={courseData.sessionsPerWeek}
+                        onChange={(e) => onInputChange('sessionsPerWeek', parseInt(e.target.value) || 0)}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                    />
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500">0 = sin límite</p>
+                </div>
+
+                {/* Section: SESIONES CON TIEMPO EXTRA */}
+                <div className="pt-5 pb-1">
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                        SESIONES CON TIEMPO EXTRA
+                    </p>
+                    <hr className="border-t border-slate-200 dark:border-slate-700" />
+                </div>
+
+                {/* Recovery fields 2-col grid */}
+                <div className="grid grid-cols-2 gap-4">
+                    {/* Ses. con Tiempo Extra count */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            N.º Sesiones
+                        </label>
+                        <input
+                            type="number"
+                            min="0"
+                            aria-label="N.º SESIONES CON TIEMPO EXTRA"
+                            value={courseData.recoverySessionsCount}
+                            onChange={(e) => onInputChange('recoverySessionsCount', parseInt(e.target.value) || 0)}
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                        />
+                    </div>
+                    {/* Min. extra */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Min. Extra
+                        </label>
+                        <input
+                            type="number"
+                            min="0"
+                            aria-label="MIN. EXTRA"
+                            value={courseData.recoveryExtraMinutes}
+                            onChange={(e) => onInputChange('recoveryExtraMinutes', parseInt(e.target.value) || 0)}
+                            onBlur={() => markTouched('recoveryExtraMinutes')}
+                            className={`w-full px-4 py-3 rounded-xl border ${
+                                getError('recoveryExtraMinutes')
+                                    ? 'border-rose-400 dark:border-rose-500'
+                                    : 'border-slate-200 dark:border-slate-700'
+                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all`}
+                        />
+                        {getError('recoveryExtraMinutes') && (
+                            <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">{getError('recoveryExtraMinutes')}</p>
+                        )}
+                    </div>
+                </div>
+
+                {/* Dynamic helper text (D-06) */}
+                {courseData.recoverySessionsCount > 0 && (
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500">
+                        Las primeras <b className="text-slate-500 dark:text-slate-400">{courseData.recoverySessionsCount}</b> sesiones durarán{' '}
+                        <b className="text-slate-500 dark:text-slate-400">{courseData.recoveryExtraMinutes}</b> min adicionales.
+                    </p>
+                )}
+
+                {/* Non-blocking warning when recovery count may exceed total sessions (D-09) */}
+                {courseData.recoverySessionsCount > 0 &&
+                    courseData.hoursPerSession > 0 &&
+                    courseData.recoverySessionsCount >= Math.ceil(courseData.totalHours / courseData.hoursPerSession) && (
+                    <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                        Hay más sesiones con tiempo extra configuradas que las sesiones estimadas del curso.
+                    </p>
+                )}
+
+                {/* Section: FECHAS EXCLUIDAS */}
+                <div className="pt-5 pb-1">
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                        FECHAS EXCLUIDAS
+                    </p>
+                    <hr className="border-t border-slate-200 dark:border-slate-700" />
+                </div>
+
+                <div className="space-y-4">
                     <div className="flex gap-2">
                         <input
                             type="date"
@@ -287,6 +410,7 @@ function CourseForm({
                         ))}
                     </div>
                 </div>
+
             </div>
         </section>
     );
