@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 06-01-PLAN.md — INITIAL_COURSE_DATA defaults and perDayHours engine branch
-last_updated: "2026-04-13T18:57:08.953Z"
+stopped_at: Completed 06-03-PLAN.md — CourseForm UI overhaul with section headers and Phase 6 fields
+last_updated: "2026-04-13T22:53:48.331Z"
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 17
-  completed_plans: 15
+  completed_plans: 17
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-03-26)
 ## Current Position
 
 Phase: 06 (sessionsperweek-enforcement-and-ui-polish) — EXECUTING
-Plan: 3 of 4
+Plan: 2 of 4
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Plan: 3 of 4
 | Phase 05-validation-export-and-ux P02 | 5 | 2 tasks | 2 files |
 | Phase 06-sessionsperweek-enforcement-and-ui-polish P02 | 5 | 1 tasks | 2 files |
 | Phase 06-sessionsperweek-enforcement-and-ui-polish P01 | 13 | 2 tasks | 5 files |
+| Phase 06-sessionsperweek-enforcement-and-ui-polish P03 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,9 @@ Recent decisions affecting current work:
 - [Phase 06-sessionsperweek-enforcement-and-ui-polish]: sessionsPerWeek default changed to 0 (no cap); perDayHours:{} added to INITIAL_COURSE_DATA with spread-merge backwards compat
 - [Phase 06-sessionsperweek-enforcement-and-ui-polish]: effRecovery removed from calculateSchedule top-level scope — per-session effDayRecovery replaces it; effNormal kept for guard clause
 - [Phase 06-sessionsperweek-enforcement-and-ui-polish]: perDayHours branch uses per-session hasPerDay check: baseHours resolved inline in while loop, not pre-computed at function top
+- [Phase 06-sessionsperweek-enforcement-and-ui-polish]: Hrs/Sesion moved from old 3-col recovery grid to CONFIGURACION DE HORARIO section; recovery section is now a clean 2-col grid
+- [Phase 06-sessionsperweek-enforcement-and-ui-polish]: perDayEnabled is local-only UI state; perDayHours:{} in courseData is canonical; toggle OFF resets via onInputChange
+- [Phase 06-sessionsperweek-enforcement-and-ui-polish]: Non-blocking recovery warning uses Math.ceil(totalHours/hoursPerSession) heuristic — CourseForm has no access to computed schedule
 
 ### Pending Todos
 
@@ -119,6 +123,6 @@ None — all todos folded into Phase 6 scope (2026-04-08).
 
 ## Session Continuity
 
-Last session: 2026-04-13T18:57:08.946Z
-Stopped at: Completed 06-01-PLAN.md — INITIAL_COURSE_DATA defaults and perDayHours engine branch
+Last session: 2026-04-13T22:53:48.326Z
+Stopped at: Completed 06-03-PLAN.md — CourseForm UI overhaul with section headers and Phase 6 fields
 Resume file: None

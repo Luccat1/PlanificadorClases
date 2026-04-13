@@ -29,8 +29,8 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 **Plans:**
 - [x] 06-01-PLAN.md — Data model + engine: sessionsPerWeek default 0, perDayHours map support
 - [x] 06-02-PLAN.md — SheetJS CDN to npm migration
-- [ ] 06-03-PLAN.md — CourseForm UI overhaul: section headers, sessionsPerWeek field, recovery rename, per-day toggle
-- [ ] 06-04-PLAN.md — Schedule output: +Xmin badge on recovery rows, App.jsx footer card rename
+- [x] 06-03-PLAN.md — CourseForm UI overhaul: section headers, sessionsPerWeek field, recovery rename, per-day toggle
+- [x] 06-04-PLAN.md — Schedule output: +Xmin badge on recovery rows, App.jsx footer card rename
 
 ## Progress
 
