@@ -5,11 +5,12 @@ import { useCourseData } from '../useCourseData.js';
 const INITIAL = {
     courseName: '',
     startDate: '',
-    sessionsPerWeek: 2,
+    sessionsPerWeek: 0,
     classDays: ['monday', 'wednesday'],
     totalHours: 40,
     hourType: 'pedagogical',
     hoursPerSession: 2,
+    perDayHours: {},
     recoverySessionsCount: 0,
     customExcludedDates: [],
     semester: '',
@@ -61,7 +62,7 @@ describe('useCourseData — handleInputChange', () => {
             result.current.handleInputChange('totalHours', 60);
         });
         expect(result.current.courseData.totalHours).toBe(60);
-        expect(result.current.courseData.sessionsPerWeek).toBe(2);
+        expect(result.current.courseData.sessionsPerWeek).toBe(0);
     });
 });
 

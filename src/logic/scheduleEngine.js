@@ -66,10 +66,6 @@ export function calculateSchedule(courseData, holidays) {
 
     const effNormal = getEffectiveHours(courseData.hoursPerSession, courseData.hourType);
     const recoveryBonusHours = (courseData.recoveryExtraMinutes ?? 30) / 60;
-    const effRecovery = getEffectiveHours(
-        courseData.hoursPerSession + recoveryBonusHours,
-        courseData.hourType
-    );
 
     if (effNormal <= 0) return [];
 
@@ -98,9 +94,19 @@ export function calculateSchedule(courseData, holidays) {
             }
             weekSessionCounts.set(weekKey, weekCount + 1);
 
+            const dayKey =
+                Object.keys(DAY_MAPPING).find(k => DAY_MAPPING[k] === dayNum) || 'monday';
+
+            // Per-day variable duration (D-12)
+            const perDayHours = courseData.perDayHours || {};
+            const hasPerDay = Object.keys(perDayHours).length > 0 && perDayHours[dayKey] != null;
+            const baseHours = hasPerDay ? perDayHours[dayKey] : courseData.hoursPerSession;
+            const effDay = getEffectiveHours(baseHours, courseData.hourType);
+            const effDayRecovery = getEffectiveHours(baseHours + recoveryBonusHours, courseData.hourType);
+
             sessionCount++;
             const isRecovery = sessionCount <= courseData.recoverySessionsCount;
-            const currentEff = isRecovery ? effRecovery : effNormal;
+            const currentEff = isRecovery ? effDayRecovery : effDay;
             const prevEff = accumulatedEff;
             accumulatedEff += currentEff;
 
@@ -110,9 +116,6 @@ export function calculateSchedule(courseData, holidays) {
                 accumulatedEff >= courseData.totalHours / 2;
             if (isMid) midCourseFound = true;
 
-            const dayKey =
-                Object.keys(DAY_MAPPING).find(k => DAY_MAPPING[k] === dayNum) || 'monday';
-
             sessions.push({
                 number: sessionCount,
                 date: new Date(current),
@@ -120,9 +123,7 @@ export function calculateSchedule(courseData, holidays) {
                 dayName: DAY_NAMES[dayKey],
                 isRecovery,
                 isMidCourse: isMid,
-                chronoHours: isRecovery
-                    ? courseData.hoursPerSession + recoveryBonusHours
-                    : courseData.hoursPerSession,
+                chronoHours: isRecovery ? baseHours + recoveryBonusHours : baseHours,
                 effHours: currentEff,
                 accHours: accumulatedEff
             });
