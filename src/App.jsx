@@ -266,7 +266,7 @@ function App() {
 
                         <footer className="grid sm:grid-cols-2 gap-4 no-print">
                             <div className="p-4 bg-amber-50 dark:bg-amber-900/10 rounded-2xl border border-amber-100 dark:border-amber-900/30">
-                                <h4 className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm mb-1"><AlertCircle size={16} /> Recuperación Activa</h4>
+                                <h4 className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm mb-1"><AlertCircle size={16} /> Sesiones con Tiempo Extra</h4>
                                 <p className="text-xs text-amber-700 dark:text-amber-500/80 leading-relaxed">Primeras <b>{courseData.recoverySessionsCount}</b> sesiones con{' '}
                                 <b>{courseData.recoveryExtraMinutes ?? 30}</b> min extra para avance rápido.</p>
                             </div>
