@@ -100,4 +100,33 @@ describe('ScheduleList (TEST-07)', () => {
         const rows = screen.queryAllByRole('row')
         expect(rows.length).toBeGreaterThanOrEqual(0)
     })
+
+    it('renders holiday badge when a session coincides with a holiday', () => {
+        const schedule = [makeSession(1, [2026, 3, 2])]
+        const holidays = [{ date: '2026-03-02', name: 'Feriado Prueba' }]
+        render(
+            <ScheduleList
+                schedule={schedule}
+                courseData={mockCourseData}
+                viewMode="list"
+                holidays={holidays}
+            />
+        )
+        expect(screen.getByText('Feriado Prueba')).toBeInTheDocument()
+    })
+
+    it('renders CalendarGrid with holiday when viewMode is calendar', () => {
+        const schedule = [makeSession(1, [2026, 3, 2])]
+        const holidays = [{ date: '2026-03-25', name: 'Feriado Calendario' }]
+        render(
+            <ScheduleList
+                schedule={schedule}
+                courseData={mockCourseData}
+                viewMode="calendar"
+                holidays={holidays}
+            />
+        )
+        expect(screen.getByText('Feriado Calendario')).toBeInTheDocument()
+    })
 })
+

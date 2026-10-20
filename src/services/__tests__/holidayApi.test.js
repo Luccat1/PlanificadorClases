@@ -42,10 +42,31 @@ describe('fetchHolidaysForYear', () => {
         const stored = localStorage.getItem('holidays_CL_2026');
         expect(stored).not.toBeNull();
         const parsed = JSON.parse(stored);
-        expect(parsed).toBeInstanceOf(Array);
-        expect(parsed.length).toBeGreaterThan(0);
-        expect(parsed[0]).toHaveProperty('date');
-        expect(parsed[0]).toHaveProperty('name');
+        expect(parsed.data).toBeInstanceOf(Array);
+        expect(parsed.data.length).toBeGreaterThan(0);
+        expect(parsed.data[0]).toHaveProperty('date');
+        expect(parsed.data[0]).toHaveProperty('name');
+        expect(parsed.cachedAt).toBeTypeOf('number');
+    });
+
+    it('re-fetches when cache is older than 30 days', async () => {
+        const expiredTime = Date.now() - (31 * 24 * 60 * 60 * 1000);
+        const cached = { data: [{ date: '2026-01-01', name: 'Old Holiday' }], cachedAt: expiredTime };
+        localStorage.setItem('holidays_CL_2026', JSON.stringify(cached));
+
+        let networkCalled = false;
+        server.use(
+            http.get('https://date.nager.at/api/v3/publicholidays/:year/CL', () => {
+                networkCalled = true;
+                return HttpResponse.json([
+                    { date: '2026-01-01', localName: 'Año Nuevo', global: true }
+                ]);
+            })
+        );
+
+        const result = await fetchHolidaysForYear(2026);
+        expect(result.fromCache).toBe(false);
+        expect(networkCalled).toBe(true);
     });
 
     it('filters out global:false (regional) holidays', async () => {

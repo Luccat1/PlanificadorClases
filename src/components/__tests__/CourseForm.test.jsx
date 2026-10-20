@@ -101,7 +101,7 @@ describe('CourseForm (TEST-06)', () => {
     it('hourType button: clicking Chronological calls onInputChange with hourType', async () => {
         const user = userEvent.setup()
         render(<Wrapper initial={{ ...initialCourseData, hourType: 'pedagogical' }} />)
-        const chronoButton = screen.getByRole('button', { name: /^Chronological$/i })
+        const chronoButton = screen.getByRole('button', { name: /^Cronológico$/i })
         await user.click(chronoButton)
         // After click, the button should reflect the active state (indigo styling)
         expect(chronoButton).toBeInTheDocument()
@@ -184,4 +184,20 @@ describe('CourseForm — inline validation (CORT-01)', () => {
         await user.tab()
         expect(screen.getByText('Ingresa un valor mayor a 0')).toBeInTheDocument()
     })
+
+    it('initializes perDayEnabled checkbox checked when perDayHours has entries', () => {
+        render(
+            <Wrapper
+                initial={{
+                    ...initialCourseData,
+                    classDays: ['monday'],
+                    perDayHours: { monday: 3 }
+                }}
+            />
+        )
+        const checkbox = screen.getByRole('checkbox', { name: /Duración Variable por Día/i })
+        expect(checkbox).toBeChecked()
+        expect(screen.getByLabelText(/HRS LUN/i)).toBeInTheDocument()
+    })
 })
+

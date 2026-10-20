@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from 'vitest'
 import { calculateSchedule } from '../../logic/scheduleEngine.js'
 
 // Minimal courseData fixture — ALL fields required (omitting any produces unexpected results)
@@ -181,4 +182,22 @@ describe('calculateSchedule — configurable recovery bonus (CORT-04)', () => {
         expect(recovery).toBeDefined()
         expect(recovery.chronoHours).toBeCloseTo(2.5)
     })
+
+    it('emits console.warn when schedule is truncated before reaching totalHours', () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+        // Request 10,000 hours with 1h sessions on Mondays only
+        const courseData = {
+            ...base,
+            totalHours: 10000,
+            hoursPerSession: 1,
+            classDays: ['monday'],
+        }
+        const sessions = calculateSchedule(courseData, [])
+        expect(warnSpy).toHaveBeenCalledWith(
+            expect.stringContaining('[calculateSchedule] Truncated after 1500 days')
+        )
+        expect(sessions.length).toBeLessThan(10000)
+        warnSpy.mockRestore()
+    })
 })
+

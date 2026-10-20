@@ -2,6 +2,8 @@
 import CalendarGrid from './CalendarGrid';
 import { getHolidayName } from '../logic/utils';
 
+const HOUR_TYPE_LABELS = { pedagogical: 'ped.', chronological: 'crono', dgai: 'dgai' };
+
 /**
  * ScheduleList Component
  * Displays the generated schedule in a list or grid format.
@@ -10,10 +12,11 @@ import { getHolidayName } from '../logic/utils';
  * @param {Array} props.schedule - List of generated sessions
  * @param {Object} props.courseData - Course configuration data
  * @param {string} props.viewMode - 'list' or 'calendar'
+ * @param {Array} [props.holidays] - List of public holidays
  */
-function ScheduleList({ schedule, courseData, viewMode }) {
+function ScheduleList({ schedule, courseData, viewMode, holidays = [] }) {
     if (viewMode === 'calendar') {
-        return <CalendarGrid sessions={schedule} />;
+        return <CalendarGrid sessions={schedule} holidays={holidays} />;
     }
 
     return (
@@ -42,7 +45,7 @@ function ScheduleList({ schedule, courseData, viewMode }) {
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                         {schedule.map((session) => {
-                            const holiday = getHolidayName(session.dateStr);
+                            const holiday = getHolidayName(session.dateStr, holidays);
                             return (
                                 <tr key={session.number} className={`hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${session.isRecovery ? 'bg-amber-50/20 dark:bg-amber-900/5' : session.isMidCourse ? 'bg-violet-50/20 dark:bg-violet-900/5' : ''}`}>
                                     <td className="px-6 py-4">
@@ -57,7 +60,7 @@ function ScheduleList({ schedule, courseData, viewMode }) {
                                     <td className="px-6 py-4">
                                         <div className="text-sm font-bold">{session.chronoHours}h <span className="text-[10px] font-normal text-slate-400">crono</span></div>
                                         {courseData.hourType !== 'chronological' && (
-                                            <div className="text-[10px] font-bold text-indigo-500 uppercase">{session.effHours.toFixed(2)}h {courseData.hourType}</div>
+                                            <div className="text-[10px] font-bold text-indigo-500 uppercase">{session.effHours.toFixed(2)}h {HOUR_TYPE_LABELS[courseData.hourType] ?? courseData.hourType}</div>
                                         )}
                                         {session.isRecovery && courseData.recoveryExtraMinutes > 0 && (
                                             <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-[9px] font-bold rounded-md mt-1">

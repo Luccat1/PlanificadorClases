@@ -137,5 +137,11 @@ export function calculateSchedule(courseData, holidays) {
         safetyCounter++;
     }
 
+    if (accumulatedEff < courseData.totalHours) {
+        console.warn(
+            `[calculateSchedule] Truncated after ${safetyCounter} days: accumulated ${accumulatedEff.toFixed(2)} of ${courseData.totalHours} required hours.`
+        );
+    }
+
     return sessions;
 }

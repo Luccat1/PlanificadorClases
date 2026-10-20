@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { getHolidayName } from '../logic/utils';
 
-const CalendarGrid = ({ sessions }) => {
+const CalendarGrid = ({ sessions, holidays = [] }) => {
     const [currentMonth, setCurrentMonth] = useState(() => {
         const firstDate = sessions.length > 0 ? new Date(sessions[0].dateStr + 'T00:00:00') : new Date();
         return new Date(firstDate.getFullYear(), firstDate.getMonth(), 1);
@@ -31,10 +31,10 @@ const CalendarGrid = ({ sessions }) => {
             <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center no-print">
                 <h2 className="text-lg font-bold capitalize">{monthName}</h2>
                 <div className="flex gap-2">
-                    <button onClick={() => changeMonth(-1)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all">
+                    <button onClick={() => changeMonth(-1)} aria-label="Mes anterior" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all cursor-pointer">
                         <ChevronLeft size={20} />
                     </button>
-                    <button onClick={() => changeMonth(1)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all">
+                    <button onClick={() => changeMonth(1)} aria-label="Mes siguiente" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all cursor-pointer">
                         <ChevronRight size={20} />
                     </button>
                 </div>
@@ -52,7 +52,7 @@ const CalendarGrid = ({ sessions }) => {
                         const monthStr = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
                         const dateStr = `${currentMonth.getFullYear()}-${monthStr}-${dayStr}`;
                         const daySessions = sessions.filter((s) => s.dateStr === dateStr);
-                        const holiday = getHolidayName(dateStr);
+                        const holiday = getHolidayName(dateStr, holidays);
 
                         return (
                             <div key={dateStr} className={`aspect-square p-1 rounded-xl border flex flex-col transition-all overflow-hidden ${daySessions.length > 0

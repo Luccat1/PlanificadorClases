@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { DAY_NAMES, DAY_MAPPING } from '../logic/constants';
+import { getFieldError } from '../logic/validation';
+
+const HOUR_TYPE_LABELS = { pedagogical: 'Pedagógico', chronological: 'Cronológico', dgai: 'DGAI' };
 
 /**
  * CourseForm Component
@@ -22,32 +25,16 @@ function CourseForm({
 }) {
     const [newExcludedDate, setNewExcludedDate] = useState('');
     const [touched, setTouched] = useState({});
-    const [perDayEnabled, setPerDayEnabled] = useState(false);
+    const [perDayEnabled, setPerDayEnabled] = useState(
+        () => Object.keys(courseData?.perDayHours || {}).length > 0
+    );
 
     const markTouched = (field) =>
         setTouched(prev => ({ ...prev, [field]: true }));
 
     function getError(field) {
         if (!touched[field]) return null;
-        switch (field) {
-            case 'totalHours':
-                return (!courseData.totalHours || courseData.totalHours <= 0)
-                    ? 'Ingresa un valor mayor a 0' : null;
-            case 'hoursPerSession':
-                return (!courseData.hoursPerSession || courseData.hoursPerSession <= 0)
-                    ? 'Ingresa un valor mayor a 0' : null;
-            case 'startDate':
-                return !courseData.startDate
-                    ? 'Selecciona una fecha de inicio' : null;
-            case 'classDays':
-                return courseData.classDays.length === 0
-                    ? 'Selecciona al menos un día de clase' : null;
-            case 'recoveryExtraMinutes':
-                return (courseData.recoveryExtraMinutes == null || courseData.recoveryExtraMinutes < 0)
-                    ? 'Ingresa 0 o más minutos' : null;
-            default:
-                return null;
-        }
+        return getFieldError(field, courseData);
     }
 
     const handleAddDate = () => {
@@ -192,7 +179,7 @@ function CourseForm({
                                         : 'text-slate-500 hover:text-slate-700'
                                     }`}
                             >
-                                {type.charAt(0).toUpperCase() + type.slice(1)}
+                                {HOUR_TYPE_LABELS[type]}
                             </button>
                         ))}
                     </div>
@@ -230,6 +217,12 @@ function CourseForm({
                                 setPerDayEnabled(on);
                                 if (!on) {
                                     onInputChange('perDayHours', {});
+                                } else {
+                                    // Persist defaults so state survives reload
+                                    const defaults = Object.fromEntries(
+                                        courseData.classDays.map(d => [d, courseData.perDayHours?.[d] ?? courseData.hoursPerSession])
+                                    );
+                                    onInputChange('perDayHours', defaults);
                                 }
                             }}
                             className="w-4 h-4 rounded accent-indigo-500"

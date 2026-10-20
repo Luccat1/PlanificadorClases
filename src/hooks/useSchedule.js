@@ -1,21 +1,6 @@
 import { useMemo } from 'react';
 import { calculateSchedule } from '../logic/scheduleEngine';
-
-/**
- * Returns false when courseData has fields that would produce a meaningless schedule.
- * Duplicate of CourseForm's getError logic — intentional (D-04: no prop threading).
- * @param {object} courseData
- * @returns {boolean}
- */
-function isFormValid(courseData) {
-    return (
-        courseData.totalHours > 0 &&
-        courseData.hoursPerSession > 0 &&
-        Boolean(courseData.startDate) &&
-        courseData.classDays.length > 0 &&
-        (courseData.recoveryExtraMinutes ?? 0) >= 0
-    );
-}
+import { isCourseDataValid } from '../logic/validation';
 
 /**
  * Derives the schedule from courseData and holidays using useMemo.
@@ -28,7 +13,7 @@ function isFormValid(courseData) {
  */
 export function useSchedule(courseData, holidays) {
     return useMemo(
-        () => isFormValid(courseData) ? calculateSchedule(courseData, holidays) : [],
+        () => isCourseDataValid(courseData) ? calculateSchedule(courseData, holidays) : [],
         [courseData, holidays]
     );
 }

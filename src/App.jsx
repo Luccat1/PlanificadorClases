@@ -44,13 +44,17 @@ function App() {
     const [darkMode, setDarkMode] = useState(() => {
         try {
             const stored = localStorage.getItem('darkMode');
-            if (stored !== null) return stored === 'true';
-            return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+            const value = stored !== null
+                ? stored === 'true'
+                : (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false);
+            document.documentElement.classList.toggle('dark', value);
+            return value;
         } catch {
             return false;
         }
     });
     useEffect(() => {
+        document.documentElement.classList.toggle('dark', darkMode);
         localStorage.setItem('darkMode', String(darkMode));
     }, [darkMode]);
 
@@ -154,8 +158,8 @@ function App() {
 
                         <button
                             onClick={() => setDarkMode(!darkMode)}
-                            className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-indigo-500 transition-all"
-                            title="Cambiar tema"
+                            className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-indigo-500 transition-all cursor-pointer"
+                            aria-label={darkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
                         >
                             {darkMode ? <Sun size={20} className="text-amber-400" /> : <Moon size={20} className="text-indigo-600" />}
                         </button>
@@ -163,8 +167,8 @@ function App() {
                         {/* Reset Button */}
                         <button
                             onClick={resetCourse}
-                            className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-rose-500 hover:text-rose-500 transition-all"
-                            title="Eliminar todo / Reiniciar"
+                            className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-rose-500 hover:text-rose-500 transition-all cursor-pointer"
+                            aria-label="Eliminar todo y reiniciar"
                         >
                             <Trash size={20} />
                         </button>
@@ -254,6 +258,7 @@ function App() {
                                         schedule={schedule}
                                         courseData={courseData}
                                         viewMode={viewMode}
+                                        holidays={holidays}
                                     />
                                 </section>
                             </>
