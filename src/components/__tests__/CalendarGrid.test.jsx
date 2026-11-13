@@ -29,4 +29,39 @@ describe('CalendarGrid', () => {
         render(<CalendarGrid sessions={sessions} holidays={holidays} />);
         expect(screen.getByText('Feriado Especial')).toBeInTheDocument();
     });
+
+    it('updates visible month when sessions change with key reset', () => {
+        const marchSessions = [
+            {
+                number: 1,
+                date: new Date(2026, 2, 2), // March 2, 2026
+                dateStr: '2026-03-02',
+                dayName: 'Lunes',
+                effHours: 2,
+                chronoHours: 2,
+                accHours: 2,
+            }
+        ];
+        const septSessions = [
+            {
+                number: 1,
+                date: new Date(2026, 8, 1), // September 1, 2026
+                dateStr: '2026-09-01',
+                dayName: 'Martes',
+                effHours: 2,
+                chronoHours: 2,
+                accHours: 2,
+            }
+        ];
+
+        const { rerender } = render(
+            <CalendarGrid key={marchSessions[0]?.dateStr ?? 'empty'} sessions={marchSessions} holidays={[]} />
+        );
+        expect(screen.getByText(/marzo.*2026/i)).toBeInTheDocument();
+
+        rerender(
+            <CalendarGrid key={septSessions[0]?.dateStr ?? 'empty'} sessions={septSessions} holidays={[]} />
+        );
+        expect(screen.getByText(/septiembre.*2026/i)).toBeInTheDocument();
+    });
 });

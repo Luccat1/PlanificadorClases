@@ -3,7 +3,7 @@
 > Gestión inteligente de cronogramas académicos para diplomados, cursos y talleres.
 
 [![Deploy Status](https://img.shields.io/badge/demo-live-brightgreen?style=flat-square)](https://luccat1.github.io/PlanificadorClases/)
-[![Tests](https://img.shields.io/badge/tests-87%20passing-brightgreen?style=flat-square)](#-testing)
+[![Tests](https://img.shields.io/badge/tests-124%20passing-brightgreen?style=flat-square)](#-testing)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
 **[🌐 Demo en vivo →](https://luccat1.github.io/PlanificadorClases/)**
@@ -16,14 +16,13 @@
 |---|---|
 | **Tipos de hora** | Pedagógica (45 min), Cronológica (60 min), DGAI (35 min) |
 | **Control de Sesiones** | Validación en tiempo real del límite semanal de sesiones y horas acumuladas |
-| **Control de Sesiones** | Validación en tiempo real del límite semanal de sesiones y horas acumuladas |
 | **Cálculo automático** | Genera el cronograma completo a partir de fecha de inicio, días de clase y total de horas |
 | **Sesiones de recuperación** | Sesiones especiales con minutos extra configurables al inicio del curso |
-| **Feriados en tiempo real** | Integración con [Nager.Date API](https://date.nager.at/) + caché local (`localStorage`) |
+| **Feriados en tiempo real** | Integración con [Nager.Date API](https://date.nager.at/) + caché local (`localStorage`) con TTL |
 | **Soporte multi-año** | Cursos que cruzan de año consultan feriados de ambos años automáticamente |
-| **Vista Lista / Calendario** | Dos modos de visualización: tabla detallada y cuadrícula mensual |
-| **Modo oscuro / claro** | Tema premium con soporte completo `dark:` |
-| **Persistencia local** | Configuración guardada automáticamente en `localStorage` |
+| **Vista Lista / Calendario** | Dos modos de visualización: tabla detallada y cuadrícula mensual con seguimiento automático de fecha |
+| **Modo oscuro / claro** | Tema premium con soporte completo `dark:` sin destellos iniciales |
+| **Persistencia local** | Configuración guardada automáticamente en `localStorage` con resguardo ante límites de cuota |
 | **Exportación Excel** | Descarga el cronograma como `.xlsx` con metadatos del curso |
 | **Exportación PDF** | Impresión optimizada con estilos `@media print` |
 | **Validación en línea** | Errores en tiempo real con estados `touched` por campo |
@@ -118,17 +117,22 @@ Abre [http://localhost:5173](http://localhost:5173) en tu navegador.
 
 ## 🧪 Testing
 
-El proyecto cuenta con **87 tests** organizados en 7 suites:
+El proyecto cuenta con **124 tests** organizados en 12 suites:
 
 | Suite | Archivo | Tests |
 |---|---|---|
 | Motor de planificación | `logic/__tests__/calculateSchedule.test.js` | Generación, feriados, recuperación |
+| Horas por día variable | `logic/__tests__/calculateSchedule.perDayHours.test.js` | Duraciones específicas por día de clase |
 | Horas efectivas | `logic/__tests__/getEffectiveHours.test.js` | Multiplicadores ped/crono/dgai |
-| Hook: datos del curso | `hooks/__tests__/useCourseData.test.js` | Persistencia localStorage |
+| Validación de formulario | `logic/__tests__/validation.test.js` | Reglas de campos obligatorios y rangos |
+| Hook: datos del curso | `hooks/__tests__/useCourseData.test.js` | Persistencia localStorage y resets |
+| Hook: datos del curso (Fase 6) | `hooks/__tests__/useCourseData.phase6.test.js` | Metadatos extendidos y tiempo extra |
 | Hook: feriados | `hooks/__tests__/useHolidays.test.js` | Fetching + caché + errores (MSW) |
-| Hook: cronograma | `hooks/__tests__/useSchedule.test.js` | Derivación + validación |
-| Componente: formulario | `components/__tests__/CourseForm.test.jsx` | Campos, validación, interacción |
-| Componente: lista | `components/__tests__/ScheduleList.test.jsx` | Renderizado de sesiones |
+| Hook: cronograma | `hooks/__tests__/useSchedule.test.js` | Derivación reactiva + validación |
+| Servicio: API feriados | `services/__tests__/holidayApi.test.js` | Nager.Date API, TTL y recuperación de caché |
+| Componente: formulario | `components/__tests__/CourseForm.test.jsx` | Campos, validación, interacción y reseteo |
+| Componente: lista | `components/__tests__/ScheduleList.test.jsx` | Renderizado de sesiones, unidades y vista calendario |
+| Componente: calendario | `components/__tests__/CalendarGrid.test.jsx` | Renderizado mensual y reseteo reactivo por fecha |
 
 ```bash
 npm test -- --run

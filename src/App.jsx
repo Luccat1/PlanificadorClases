@@ -55,7 +55,11 @@ function App() {
     });
     useEffect(() => {
         document.documentElement.classList.toggle('dark', darkMode);
-        localStorage.setItem('darkMode', String(darkMode));
+        try {
+            localStorage.setItem('darkMode', String(darkMode));
+        } catch {
+            // Storage unavailable (e.g. private mode quota)
+        }
     }, [darkMode]);
 
     const [viewMode, setViewMode] = useState(() => {
@@ -66,7 +70,11 @@ function App() {
         }
     });
     useEffect(() => {
-        localStorage.setItem('viewMode', viewMode);
+        try {
+            localStorage.setItem('viewMode', viewMode);
+        } catch {
+            // Storage unavailable (e.g. private mode quota)
+        }
     }, [viewMode]);
 
     const exportToExcel = () => {
@@ -127,11 +135,11 @@ function App() {
                 {/* Header */}
                 <header className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 no-print">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-indigo-600 rounded-2xl text-white shadow-xl shadow-indigo-500/20">
+                        <div className="p-3 bg-teal-700 rounded-xl text-white">
                             <CalendarDays size={32} />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400">
+                            <h1 className="text-3xl font-bold text-teal-800 dark:text-teal-200 tracking-tight">
                                 Planificador Pro
                             </h1>
                             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Gestión inteligente de cronogramas académicos</p>
@@ -142,13 +150,13 @@ function App() {
                         <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
                             <button
                                 onClick={() => setViewMode('list')}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${viewMode === 'list' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400' : 'text-slate-500 hover:text-slate-700'}`}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${viewMode === 'list' ? 'bg-white dark:bg-slate-700 shadow-sm text-teal-700 dark:text-teal-400' : 'text-slate-500 hover:text-slate-700'}`}
                             >
                                 <List size={16} /> Lista
                             </button>
                             <button
                                 onClick={() => setViewMode('calendar')}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${viewMode === 'calendar' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400' : 'text-slate-500 hover:text-slate-700'}`}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${viewMode === 'calendar' ? 'bg-white dark:bg-slate-700 shadow-sm text-teal-700 dark:text-teal-400' : 'text-slate-500 hover:text-slate-700'}`}
                             >
                                 <LayoutGrid size={16} /> Grid
                             </button>
@@ -158,10 +166,10 @@ function App() {
 
                         <button
                             onClick={() => setDarkMode(!darkMode)}
-                            className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-indigo-500 transition-all cursor-pointer"
+                            className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-teal-500 transition-all cursor-pointer"
                             aria-label={darkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
                         >
-                            {darkMode ? <Sun size={20} className="text-amber-400" /> : <Moon size={20} className="text-indigo-600" />}
+                            {darkMode ? <Sun size={20} className="text-amber-400" /> : <Moon size={20} className="text-teal-700" />}
                         </button>
 
                         {/* Reset Button */}
@@ -174,10 +182,10 @@ function App() {
                         </button>
 
                         <div className="flex gap-2">
-                            <button onClick={exportToExcel} className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg shadow-emerald-600/20 transition-all active:scale-95">
+                            <button onClick={exportToExcel} className="flex items-center gap-2 px-5 py-2.5 bg-teal-700 hover:bg-teal-800 text-white rounded-lg font-semibold transition-all active:scale-95">
                                 <Download size={18} /> Excel
                             </button>
-                            <button onClick={() => window.print()} className="flex items-center gap-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold shadow-lg shadow-rose-600/20 transition-all active:scale-95">
+                            <button onClick={() => window.print()} className="flex items-center gap-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-semibold transition-all active:scale-95">
                                 <Printer size={18} /> PDF
                             </button>
                         </div>
@@ -235,25 +243,25 @@ function App() {
                         {schedule.length > 0 ? (
                             <>
                                 <section className="grid sm:grid-cols-3 gap-4">
-                                    <div className="bg-indigo-600 text-white rounded-3xl p-6 shadow-xl shadow-indigo-600/20">
-                                        <TrendingUp size={24} className="mb-4 opacity-70" />
-                                        <p className="text-sm font-medium opacity-80">Sesiones Totales</p>
-                                        <h3 className="text-3xl font-bold">{stats.totalSessions}</h3>
+                                    <div className="bg-teal-700 text-white rounded-2xl p-6">
+                                        <TrendingUp size={20} className="mb-3" />
+                                        <p className="text-xs font-semibold uppercase tracking-wide opacity-75">Sesiones Totales</p>
+                                        <h3 className="text-4xl font-bold tabular-nums">{stats.totalSessions}</h3>
                                     </div>
-                                    <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
-                                        <Award size={24} className="mb-4 text-emerald-500" />
-                                        <p className="text-sm font-medium text-slate-500">Término Estimado</p>
-                                        <h3 className="text-lg font-bold">{formatDateLong(stats.endDate)}</h3>
+                                    <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
+                                        <Award size={20} className="mb-3 text-teal-500" />
+                                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Término Estimado</p>
+                                        <h3 className="text-base font-bold leading-tight">{formatDateLong(stats.endDate)}</h3>
                                     </div>
-                                    <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
-                                        <Calendar size={24} className="mb-4 text-amber-500" />
-                                        <p className="text-sm font-medium text-slate-500">Intensidad <span className="text-[10px] font-normal text-slate-400">(hrs/sem)</span></p>
-                                        <h3 className="text-lg font-bold">{stats.avgHoursPerWeek} <span className="text-xs font-normal text-slate-400">promedio</span></h3>
+                                    <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
+                                        <Calendar size={20} className="mb-3 text-amber-500" />
+                                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Intensidad <span className="normal-case font-normal text-slate-400">(hrs/sem)</span></p>
+                                        <h3 className="text-lg font-bold tabular-nums">{stats.avgHoursPerWeek} <span className="text-xs font-normal text-slate-400">promedio</span></h3>
                                     </div>
                                 </section>
 
                                 {/* Schedule Container - Refactored into ScheduleList */}
-                                <section className={`bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col ${viewMode === 'list' ? 'h-[600px] print-h-auto' : ''}`}>
+                                <section className={`bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col ${viewMode === 'list' ? 'h-[600px] print-h-auto' : ''}`}>
                                     <ScheduleList
                                         schedule={schedule}
                                         courseData={courseData}
@@ -263,8 +271,8 @@ function App() {
                                 </section>
                             </>
                         ) : (
-                            <div className="flex-1 flex flex-col items-center justify-center p-12 bg-white dark:bg-slate-900 rounded-[40px] border-2 border-dashed border-slate-200 dark:border-slate-800 text-center space-y-4">
-                                <div className="p-6 bg-slate-50 dark:bg-slate-800 rounded-3xl text-slate-300"><BookOpen size={64} /></div>
+                            <div className="flex-1 flex flex-col items-center justify-center p-12 bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 text-center space-y-4">
+                                <div className="p-5 bg-slate-50 dark:bg-slate-800 rounded-xl text-slate-300"><BookOpen size={48} /></div>
                                 <div><h3 className="text-xl font-bold">Listos para empezar</h3><p className="text-slate-500 max-w-xs mx-auto">Configura los detalles del curso en el panel lateral para generar el cronograma automático.</p></div>
                             </div>
                         )}

@@ -16,7 +16,7 @@ const HOUR_TYPE_LABELS = { pedagogical: 'ped.', chronological: 'crono', dgai: 'd
  */
 function ScheduleList({ schedule, courseData, viewMode, holidays = [] }) {
     if (viewMode === 'calendar') {
-        return <CalendarGrid sessions={schedule} holidays={holidays} />;
+        return <CalendarGrid key={schedule[0]?.dateStr ?? 'empty'} sessions={schedule} holidays={holidays} />;
     }
 
     return (
@@ -60,7 +60,7 @@ function ScheduleList({ schedule, courseData, viewMode, holidays = [] }) {
                                     <td className="px-6 py-4">
                                         <div className="text-sm font-bold">{session.chronoHours}h <span className="text-[10px] font-normal text-slate-400">crono</span></div>
                                         {courseData.hourType !== 'chronological' && (
-                                            <div className="text-[10px] font-bold text-indigo-500 uppercase">{session.effHours.toFixed(2)}h {HOUR_TYPE_LABELS[courseData.hourType] ?? courseData.hourType}</div>
+                                            <div className="text-[10px] font-bold text-teal-600 uppercase">{session.effHours.toFixed(2)}h {HOUR_TYPE_LABELS[courseData.hourType] ?? courseData.hourType}</div>
                                         )}
                                         {session.isRecovery && courseData.recoveryExtraMinutes > 0 && (
                                             <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-[9px] font-bold rounded-md mt-1">
@@ -70,9 +70,9 @@ function ScheduleList({ schedule, courseData, viewMode, holidays = [] }) {
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="w-24 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
-                                            <div className="bg-indigo-500 h-full rounded-full transition-all duration-500" style={{ width: `${(session.accHours / courseData.totalHours) * 100}%` }}></div>
+                                            <div className="bg-teal-600 h-full rounded-full transition-all duration-300" style={{ width: `${(session.accHours / courseData.totalHours) * 100}%` }}></div>
                                         </div>
-                                        <div className="text-[10px] font-bold text-slate-400">{session.accHours.toFixed(1)} <span className="font-normal">ped.</span></div>
+                                        <div className="text-[10px] font-bold text-slate-400">{session.accHours.toFixed(1)} <span className="font-normal">{HOUR_TYPE_LABELS[courseData.hourType] ?? 'ped.'}</span></div>
                                         <div className="text-[10px] text-slate-300 dark:text-slate-600">{(session.accChronoHours ?? 0).toFixed(1)} <span className="font-normal">crono</span></div>
                                     </td>
                                     <td className="px-6 py-4 text-right">

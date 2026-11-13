@@ -58,12 +58,12 @@ const CalendarGrid = ({ sessions, holidays = [] }) => {
                             <div key={dateStr} className={`aspect-square p-1 rounded-xl border flex flex-col transition-all overflow-hidden ${daySessions.length > 0
                                     ? (daySessions[0].isRecovery ? 'bg-amber-50 border-amber-200 dark:bg-amber-900/10 dark:border-amber-900/40' :
                                         daySessions[0].isMidCourse ? 'bg-violet-50 border-violet-200 dark:bg-violet-900/10 dark:border-violet-900/40' :
-                                            'bg-indigo-50 border-indigo-100 dark:bg-indigo-900/10 dark:border-indigo-950')
+                                            'bg-teal-50 border-teal-100 dark:bg-teal-900/10 dark:border-teal-900/30')
                                     : 'bg-white border-slate-50 dark:bg-slate-900 dark:border-slate-800/50'
                                 }`}>
-                                <span className={`text-[10px] font-bold ${daySessions.length > 0 ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`}>{day}</span>
+                                <span className={`text-[10px] font-bold ${daySessions.length > 0 ? 'text-teal-700 dark:text-teal-400' : 'text-slate-400'}`}>{day}</span>
                                 {daySessions.map((s) => (
-                                    <div key={s.number} className="mt-1 px-1 py-0.5 bg-indigo-600 text-white rounded text-[8px] font-bold truncate">
+                                    <div key={s.number} className="mt-1 px-1 py-0.5 bg-teal-700 text-white rounded text-[8px] font-bold truncate">
                                         S{s.number} ({s.effHours.toFixed(1)}h)
                                     </div>
                                 ))}

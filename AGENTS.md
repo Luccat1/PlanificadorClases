@@ -57,8 +57,8 @@ src/
 
 ### 5. Testing
 
-- **Framework**: Vitest 3 + Testing Library + MSW 2.
-- El proyecto tiene **87 tests** en 7 suites.
+- **Framework**: Vitest 5 + Testing Library + MSW 2.
+- El proyecto tiene **124 tests** en 12 suites.
 - Los tests de hooks usan `renderHook` de `@testing-library/react`.
 - Los tests de componentes usan el patrón wrapper (real `useState`, no mocks).
 - Las fechas en tests usan constructor local `new Date()` (no ISO strings) para evitar bugs UTC en jsdom.

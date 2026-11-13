@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { DAY_NAMES, DAY_MAPPING } from '../logic/constants';
 import { getFieldError } from '../logic/validation';
@@ -29,6 +29,10 @@ function CourseForm({
         () => Object.keys(courseData?.perDayHours || {}).length > 0
     );
 
+    useEffect(() => {
+        setPerDayEnabled(Object.keys(courseData?.perDayHours || {}).length > 0);
+    }, [courseData?.perDayHours]);
+
     const markTouched = (field) =>
         setTouched(prev => ({ ...prev, [field]: true }));
 
@@ -36,6 +40,12 @@ function CourseForm({
         if (!touched[field]) return null;
         return getFieldError(field, courseData);
     }
+
+    const startDateError = getError('startDate');
+    const totalHoursError = getError('totalHours');
+    const hoursPerSessionError = getError('hoursPerSession');
+    const classDaysError = getError('classDays');
+    const recoveryExtraMinutesError = getError('recoveryExtraMinutes');
 
     const handleAddDate = () => {
         if (newExcludedDate) {
@@ -45,9 +55,9 @@ function CourseForm({
     };
 
     return (
-        <section className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+        <section className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <Plus className="text-indigo-500" size={22} />
+                <Plus className="text-teal-600" size={22} />
                 Nuevo Curso
             </h2>
 
@@ -69,7 +79,7 @@ function CourseForm({
                         value={courseData.courseName}
                         onChange={(e) => onInputChange('courseName', e.target.value)}
                         placeholder="Ej. Diplomado en Marketing Digital"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                     />
                 </div>
 
@@ -83,7 +93,7 @@ function CourseForm({
                         value={courseData.semester}
                         onChange={(e) => onInputChange('semester', e.target.value)}
                         placeholder="Ej. 2do Semestre 2026"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                     />
                 </div>
 
@@ -97,7 +107,7 @@ function CourseForm({
                         value={courseData.professorName}
                         onChange={(e) => onInputChange('professorName', e.target.value)}
                         placeholder="Ej. María González"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                     />
                 </div>
 
@@ -111,7 +121,7 @@ function CourseForm({
                         value={courseData.contactEmail}
                         onChange={(e) => onInputChange('contactEmail', e.target.value)}
                         placeholder="Ej. m.gonzalez@universidad.cl"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                     />
                 </div>
 
@@ -132,15 +142,15 @@ function CourseForm({
                             value={courseData.startDate}
                             onChange={(e) => onInputChange('startDate', e.target.value)}
                             onBlur={() => markTouched('startDate')}
-                            className={`w-full px-4 py-3 rounded-xl border ${
-                                getError('startDate')
+                            className={`w-full px-4 py-3 rounded-lg border ${
+                                startDateError
                                     ? 'border-rose-400 dark:border-rose-500'
                                     : 'border-slate-200 dark:border-slate-700'
-                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all`}
+                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all`}
                         />
-                        {getError('startDate') && (
+                        {startDateError && (
                             <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">
-                                {getError('startDate')}
+                                {startDateError}
                             </p>
                         )}
                     </div>
@@ -152,15 +162,15 @@ function CourseForm({
                             value={courseData.totalHours}
                             onChange={(e) => onInputChange('totalHours', parseInt(e.target.value) || 0)}
                             onBlur={() => markTouched('totalHours')}
-                            className={`w-full px-4 py-3 rounded-xl border ${
-                                getError('totalHours')
+                            className={`w-full px-4 py-3 rounded-lg border ${
+                                totalHoursError
                                     ? 'border-rose-400 dark:border-rose-500'
                                     : 'border-slate-200 dark:border-slate-700'
-                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all`}
+                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all`}
                         />
-                        {getError('totalHours') && (
+                        {totalHoursError && (
                             <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">
-                                {getError('totalHours')}
+                                {totalHoursError}
                             </p>
                         )}
                     </div>
@@ -175,7 +185,7 @@ function CourseForm({
                                 key={type}
                                 onClick={() => onInputChange('hourType', type)}
                                 className={`flex-1 py-2 px-2 text-xs font-bold rounded-lg transition-all ${courseData.hourType === type
-                                        ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400'
+                                        ? 'bg-white dark:bg-slate-700 shadow-sm text-teal-700 dark:text-teal-400'
                                         : 'text-slate-500 hover:text-slate-700'
                                     }`}
                             >
@@ -195,14 +205,14 @@ function CourseForm({
                         value={courseData.hoursPerSession}
                         onChange={(e) => onInputChange('hoursPerSession', parseFloat(e.target.value) || 0)}
                         onBlur={() => markTouched('hoursPerSession')}
-                        className={`w-full px-4 py-3 rounded-xl border ${
-                            getError('hoursPerSession')
+                        className={`w-full px-4 py-3 rounded-lg border ${
+                            hoursPerSessionError
                                 ? 'border-rose-400 dark:border-rose-500'
                                 : 'border-slate-200 dark:border-slate-700'
-                        } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all`}
+                        } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all`}
                     />
-                    {getError('hoursPerSession') && (
-                        <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">{getError('hoursPerSession')}</p>
+                    {hoursPerSessionError && (
+                        <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">{hoursPerSessionError}</p>
                     )}
                 </div>
 
@@ -225,7 +235,7 @@ function CourseForm({
                                     onInputChange('perDayHours', defaults);
                                 }
                             }}
-                            className="w-4 h-4 rounded accent-indigo-500"
+                            className="w-4 h-4 rounded accent-teal-600"
                         />
                         <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                             Duración Variable por Día
@@ -251,7 +261,7 @@ function CourseForm({
                                                 [day]: val
                                             });
                                         }}
-                                        className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-sm"
+                                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all text-sm"
                                     />
                                 </div>
                             ))}
@@ -275,8 +285,8 @@ function CourseForm({
                             <button
                                 key={day}
                                 onClick={() => { onDayToggle(day); markTouched('classDays'); }}
-                                className={`py-2 text-xs font-bold rounded-xl border transition-all ${courseData.classDays.includes(day)
-                                        ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-950 dark:border-indigo-900 dark:text-indigo-400'
+                                className={`py-2 text-xs font-bold rounded-lg border transition-all ${courseData.classDays.includes(day)
+                                        ? 'bg-teal-50 border-teal-200 text-teal-700 dark:bg-teal-950 dark:border-teal-900 dark:text-teal-400'
                                         : 'bg-white border-slate-200 text-slate-400 dark:bg-slate-900 dark:border-slate-800 hover:border-slate-400'
                                     }`}
                             >
@@ -284,9 +294,9 @@ function CourseForm({
                             </button>
                         ))}
                     </div>
-                    {getError('classDays') && (
+                    {classDaysError && (
                         <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">
-                            {getError('classDays')}
+                            {classDaysError}
                         </p>
                     )}
                 </div>
@@ -302,7 +312,7 @@ function CourseForm({
                         aria-label="SES. MÁX. POR SEMANA"
                         value={courseData.sessionsPerWeek}
                         onChange={(e) => onInputChange('sessionsPerWeek', parseInt(e.target.value) || 0)}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                     />
                     <p className="text-[10px] text-slate-400 dark:text-slate-500">0 = sin límite</p>
                 </div>
@@ -328,7 +338,7 @@ function CourseForm({
                             aria-label="N.º SESIONES CON TIEMPO EXTRA"
                             value={courseData.recoverySessionsCount}
                             onChange={(e) => onInputChange('recoverySessionsCount', parseInt(e.target.value) || 0)}
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                         />
                     </div>
                     {/* Min. extra */}
@@ -343,14 +353,14 @@ function CourseForm({
                             value={courseData.recoveryExtraMinutes}
                             onChange={(e) => onInputChange('recoveryExtraMinutes', parseInt(e.target.value) || 0)}
                             onBlur={() => markTouched('recoveryExtraMinutes')}
-                            className={`w-full px-4 py-3 rounded-xl border ${
-                                getError('recoveryExtraMinutes')
+                            className={`w-full px-4 py-3 rounded-lg border ${
+                                recoveryExtraMinutesError
                                     ? 'border-rose-400 dark:border-rose-500'
                                     : 'border-slate-200 dark:border-slate-700'
-                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all`}
+                            } bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all`}
                         />
-                        {getError('recoveryExtraMinutes') && (
-                            <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">{getError('recoveryExtraMinutes')}</p>
+                        {recoveryExtraMinutesError && (
+                            <p className="text-sm text-rose-500 dark:text-rose-400 mt-1">{recoveryExtraMinutesError}</p>
                         )}
                     </div>
                 </div>
@@ -386,9 +396,9 @@ function CourseForm({
                             type="date"
                             value={newExcludedDate}
                             onChange={(e) => setNewExcludedDate(e.target.value)}
-                            className="flex-1 px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                            className="flex-1 px-4 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                         />
-                        <button onClick={handleAddDate} className="p-2 bg-slate-900 dark:bg-indigo-600 text-white rounded-xl hover:opacity-90 transition-all">
+                        <button onClick={handleAddDate} className="p-2 bg-teal-800 dark:bg-teal-600 text-white rounded-lg hover:opacity-90 transition-all">
                             <Plus size={20} />
                         </button>
                     </div>

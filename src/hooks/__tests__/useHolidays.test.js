@@ -68,8 +68,8 @@ describe('useHolidays', () => {
     it('uses cache and skips network when both years are cached', async () => {
         const holidays2026 = [{ date: '2026-01-01', name: 'Año Nuevo' }];
         const holidays2027 = [{ date: '2027-01-01', name: 'Año Nuevo' }];
-        localStorage.setItem('holidays_CL_2026', JSON.stringify(holidays2026));
-        localStorage.setItem('holidays_CL_2027', JSON.stringify(holidays2027));
+        localStorage.setItem('holidays_CL_2026', JSON.stringify({ data: holidays2026, cachedAt: Date.now() }));
+        localStorage.setItem('holidays_CL_2027', JSON.stringify({ data: holidays2027, cachedAt: Date.now() }));
 
         let networkCalled = false;
         server.use(

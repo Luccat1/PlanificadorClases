@@ -15,6 +15,7 @@ function makeSession(n, [year, month, day], overrides = {}) {
         chronoHours: 1,
         effHours: 1,
         accHours: n,
+        accChronoHours: n * 1,
         ...overrides,
     }
 }
@@ -127,6 +128,62 @@ describe('ScheduleList (TEST-07)', () => {
             />
         )
         expect(screen.getByText('Feriado Calendario')).toBeInTheDocument()
+    })
+
+    it('updates visible calendar month when schedule changes in calendar view', () => {
+        const marchSchedule = [makeSession(1, [2026, 3, 2])]
+        const septSchedule = [makeSession(1, [2026, 9, 1])]
+        const { rerender } = render(
+            <ScheduleList
+                schedule={marchSchedule}
+                courseData={mockCourseData}
+                viewMode="calendar"
+            />
+        )
+        expect(screen.getByText(/marzo.*2026/i)).toBeInTheDocument()
+
+        rerender(
+            <ScheduleList
+                schedule={septSchedule}
+                courseData={mockCourseData}
+                viewMode="calendar"
+            />
+        )
+        expect(screen.getByText(/septiembre.*2026/i)).toBeInTheDocument()
+    })
+
+    it('displays correct hour unit in accumulated hours column according to hourType', () => {
+        const schedule = [makeSession(1, [2026, 3, 2])]
+        const { rerender } = render(
+            <ScheduleList
+                schedule={schedule}
+                courseData={{ ...mockCourseData, hourType: 'dgai' }}
+                viewMode="list"
+            />
+        )
+        expect(screen.getByText('dgai')).toBeInTheDocument()
+
+        rerender(
+            <ScheduleList
+                schedule={schedule}
+                courseData={{ ...mockCourseData, hourType: 'pedagogical' }}
+                viewMode="list"
+            />
+        )
+        expect(screen.getByText('ped.')).toBeInTheDocument()
+    })
+
+    it('renders accumulated chronological hours in progress column', () => {
+        const schedule = [makeSession(1, [2026, 3, 2], { accChronoHours: 2.5 })]
+        render(
+            <ScheduleList
+                schedule={schedule}
+                courseData={{ ...mockCourseData, hourType: 'pedagogical', totalHours: 10 }}
+                viewMode="list"
+            />
+        )
+        expect(screen.getByText('2.5')).toBeInTheDocument()
+        expect(screen.getAllByText(/crono/).length).toBeGreaterThan(0)
     })
 })
 

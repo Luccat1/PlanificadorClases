@@ -199,5 +199,38 @@ describe('CourseForm — inline validation (CORT-01)', () => {
         expect(checkbox).toBeChecked()
         expect(screen.getByLabelText(/HRS LUN/i)).toBeInTheDocument()
     })
+
+    it('unchecks perDayEnabled checkbox when courseData.perDayHours becomes empty (e.g. after reset)', () => {
+        const { rerender } = render(
+            <CourseForm
+                courseData={{
+                    ...initialCourseData,
+                    classDays: ['monday'],
+                    perDayHours: { monday: 3 }
+                }}
+                onInputChange={() => {}}
+                onDayToggle={() => {}}
+                onAddDate={() => {}}
+                onRemoveDate={() => {}}
+            />
+        )
+        const checkbox = screen.getByRole('checkbox', { name: /Duración Variable por Día/i })
+        expect(checkbox).toBeChecked()
+
+        rerender(
+            <CourseForm
+                courseData={{
+                    ...initialCourseData,
+                    classDays: ['monday'],
+                    perDayHours: {}
+                }}
+                onInputChange={() => {}}
+                onDayToggle={() => {}}
+                onAddDate={() => {}}
+                onRemoveDate={() => {}}
+            />
+        )
+        expect(checkbox).not.toBeChecked()
+    })
 })
 

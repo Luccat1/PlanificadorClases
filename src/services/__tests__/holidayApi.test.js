@@ -21,7 +21,7 @@ describe('fetchHolidaysForYear', () => {
 
     it('returns fromCache:true and skips network on cache hit', async () => {
         const cached = [{ date: '2026-01-01', name: 'Año Nuevo' }];
-        localStorage.setItem('holidays_CL_2026', JSON.stringify(cached));
+        localStorage.setItem('holidays_CL_2026', JSON.stringify({ data: cached, cachedAt: Date.now() }));
 
         let networkCalled = false;
         server.use(
@@ -35,6 +35,26 @@ describe('fetchHolidaysForYear', () => {
         expect(result.fromCache).toBe(true);
         expect(result.holidays).toEqual(cached);
         expect(networkCalled).toBe(false);
+    });
+
+    it('ignores legacy raw array format cache and re-fetches from API', async () => {
+        const legacyCached = [{ date: '2026-01-01', name: 'Año Nuevo Antiguo' }];
+        localStorage.setItem('holidays_CL_2026', JSON.stringify(legacyCached));
+
+        let networkCalled = false;
+        server.use(
+            http.get('https://date.nager.at/api/v3/publicholidays/:year/CL', () => {
+                networkCalled = true;
+                return HttpResponse.json([
+                    { date: '2026-01-01', localName: 'Año Nuevo', global: true }
+                ]);
+            })
+        );
+
+        const result = await fetchHolidaysForYear(2026);
+        expect(result.fromCache).toBe(false);
+        expect(networkCalled).toBe(true);
+        expect(result.holidays[0].name).toBe('Año Nuevo');
     });
 
     it('writes holidays to localStorage after successful fetch', async () => {

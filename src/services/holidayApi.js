@@ -18,10 +18,6 @@ export async function fetchHolidaysForYear(year) {
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
             const parsed = JSON.parse(cached);
-            // Backward compatibility with raw array or { data, cachedAt }
-            if (Array.isArray(parsed)) {
-                return { holidays: parsed, fromCache: true };
-            }
             if (parsed && Array.isArray(parsed.data)) {
                 const age = Date.now() - (parsed.cachedAt || 0);
                 if (age < CACHE_TTL_MS) {
